@@ -1,0 +1,112 @@
+[
+  {
+    "cityName": "臺北市",
+    "cityLink": "Taipei",
+    "image": "Taipei.png"
+  },
+  {
+    "cityName": "新北市",
+    "cityLink": "NewTaipei",
+    "image": "NewTaipei.png"
+  },
+  {
+    "cityName": "桃園市",
+    "cityLink": "Taoyuan",
+    "image": "Taoyuan.png"
+  },
+  {
+    "cityName": "臺中市",
+    "cityLink": "Taichung",
+    "image": "Taichung.png"
+  },
+  {
+    "cityName": "臺南市",
+    "cityLink": "Tainan",
+    "image": "Tainan.png"
+  },
+  {
+    "cityName": "高雄市",
+    "cityLink": "Kaohsiung",
+    "image": "Kaohsiung.png"
+  },
+  {
+    "cityName": "基隆市",
+    "cityLink": "Keelung",
+    "image": "Keelung.png"
+  },
+  {
+    "cityName": "新竹市",
+    "cityLink": "Hsinchu",
+    "image": "Hsinchu.png"
+  },
+  {
+    "cityName": "新竹縣",
+    "cityLink": "HsinchuCounty",
+    "image": "HsinchuCounty.png"
+  },
+  {
+    "cityName": "苗栗縣",
+    "cityLink": "MiaoliCounty",
+    "image": "MiaoliCounty.png"
+  },
+  {
+    "cityName": "彰化縣",
+    "cityLink": "ChanghuaCounty",
+    "image": "ChanghuaCounty.png"
+  },
+  {
+    "cityName": "南投縣",
+    "cityLink": "NantouCounty",
+    "image": "NantouCounty.png"
+  },
+  {
+    "cityName": "雲林縣",
+    "cityLink": "YunlinCounty",
+    "image": "YunlinCounty.png"
+  },
+  {
+    "cityName": "嘉義縣",
+    "cityLink": "ChiayiCounty",
+    "image": "ChiayiCounty.png"
+  },
+  {
+    "cityName": "嘉義市",
+    "cityLink": "Chiayi",
+    "image": "Chiayi.png"
+  },
+  {
+    "cityName": "屏東縣",
+    "cityLink": "PingtungCounty",
+    "image": "PingtungCounty.png"
+  },
+  {
+    "cityName": "宜蘭縣",
+    "cityLink": "YilanCounty",
+    "image": "YilanCounty.png"
+  },
+  {
+    "cityName": "花蓮縣",
+    "cityLink": "HualienCounty",
+    "image": "HualienCounty.png"
+  },
+  {
+    "cityName": "臺東縣",
+    "cityLink": "TaitungCounty",
+    "image": "TaitungCounty.png"
+  },
+  {
+    "cityName": "金門縣",
+    "cityLink": "KinmenCounty",
+    "image": "KinmenCounty.png"
+  },
+  {
+    "cityName": "澎湖縣",
+    "cityLink": "PenghuCounty",
+    "image": "PenghuCounty.png"
+  },
+  {
+    "cityName": "連江縣",
+    "cityLink": "LienchiangCounty",
+    "image": "LienchiangCounty.png"
+  }
+]
