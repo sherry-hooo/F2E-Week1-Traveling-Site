@@ -2,7 +2,7 @@ import axios from 'axios'
 import jsSHA from 'jssha'
 
 const apiClient = axios.create({
-  baseURL: 'https://ptx.transportdata.tw/MOTC/v2/Tourism/ScenicSpot/',
+  baseURL: 'https://ptx.transportdata.tw/MOTC/v2/Tourism/',
   withCredentials: false,
   headers: {
     Accept: 'application/json',
@@ -12,22 +12,77 @@ const apiClient = axios.create({
 })
 
 export default {
-  getCity(city) {
-    return apiClient.get('/' + city + '?$top=30&$format=JSON')
-  },
-  getSite(city, id) {
-    // return apiClient.get(`/${city}?$filter=contains(ID%2C "${id}")&$top=30&$format=JSON`)
+  getCity(city, total, skip = 0) {
     return apiClient.get(
-      '/' +
+      '/ScenicSpot/' +
         city +
-        '?$filter=contains(ID%2C%27' +
-        id +
-        '%27)' +
-        '&$top=30&$format=JSON',
+        '?$top=' +
+        total +
+        '&$skip=' +
+        skip +
+        '&$format=JSON',
     )
   },
-  getTest() {
-    return apiClient.get('/' + 'NewTaipei?$top=30&$format=JSON')
+  getSite(city, id) {
+    return apiClient.get(
+      '/ScenicSpot/' +
+        city +
+        '?$filter=ID%20eq%20' +
+        `'${id}'` +
+        '&$format=JSON',
+    )
+  },
+  getRestaurant(city, id) {
+    return apiClient.get(
+      '/Restaurant/' +
+        city +
+        '?$filter=ID%20eq%20' +
+        `'${id}'` +
+        '&$format=JSON',
+    )
+  },
+  getHotel(city, id) {
+    console.log(
+      apiClient.get(
+        '/Hotel/' + city + '?$filter=ID%20eq%20' + `'${id}'` + '&$format=JSON',
+      ),
+    )
+    return apiClient.get(
+      '/Hotel/' + city + '?$filter=ID%20eq%20' + `'${id}'` + '&$format=JSON',
+    )
+  },
+  getNearSites(lat, lon, distance) {
+    return apiClient.get(
+      '/ScenicSpot?$top=10&$spatialFilter=nearby(' +
+        lat +
+        '%2C%20' +
+        lon +
+        '%2C%20' +
+        distance +
+        ')&$format=JSON',
+    )
+  },
+  getNearRestaurant(lat, lon, distance) {
+    return apiClient.get(
+      '/Restaurant?$top=10&$spatialFilter=nearby(' +
+        lat +
+        '%2C%20' +
+        lon +
+        '%2C%20' +
+        distance +
+        ')&$format=JSON',
+    )
+  },
+  getNearHotel(lat, lon, distance) {
+    return apiClient.get(
+      '/Hotel?$top=10&$spatialFilter=nearby(' +
+        lat +
+        '%2C%20' +
+        lon +
+        '%2C%20' +
+        distance +
+        ')&$format=JSON',
+    )
   },
 }
 

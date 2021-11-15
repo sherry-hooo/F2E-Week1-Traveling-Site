@@ -1,112 +1,156 @@
 [
   {
     "cityName": "臺北市",
+    "district":"北部",
     "cityLink": "Taipei",
+    "id":"TP",
     "image": "Taipei.png"
   },
   {
     "cityName": "新北市",
+    "district":"北部",
     "cityLink": "NewTaipei",
+    "id":"NTC",
     "image": "NewTaipei.png"
   },
   {
     "cityName": "桃園市",
+    "district":"北部",
     "cityLink": "Taoyuan",
+    "id":"TY",
     "image": "Taoyuan.png"
   },
   {
     "cityName": "臺中市",
+    "district":"中部",
     "cityLink": "Taichung",
+    "id":"TC",
     "image": "Taichung.png"
   },
   {
     "cityName": "臺南市",
+    "district":"南部",
     "cityLink": "Tainan",
+    "id":"TN",
     "image": "Tainan.png"
   },
   {
     "cityName": "高雄市",
+    "district":"南部",
     "cityLink": "Kaohsiung",
+    "id":"KH",
     "image": "Kaohsiung.png"
   },
   {
     "cityName": "基隆市",
+    "district":"北部",
     "cityLink": "Keelung",
+    "id":"KL",
     "image": "Keelung.png"
   },
   {
     "cityName": "新竹市",
+    "district":"北部",
     "cityLink": "Hsinchu",
+    "id":"HCC",
     "image": "Hsinchu.png"
   },
   {
     "cityName": "新竹縣",
+    "district":"北部",
     "cityLink": "HsinchuCounty",
+    "id":"HC",
     "image": "HsinchuCounty.png"
   },
   {
     "cityName": "苗栗縣",
+    "district":"中部",
     "cityLink": "MiaoliCounty",
+    "id":"ML",
     "image": "MiaoliCounty.png"
   },
   {
     "cityName": "彰化縣",
+    "district":"中部",
     "cityLink": "ChanghuaCounty",
+    "id":"CH",
     "image": "ChanghuaCounty.png"
   },
   {
     "cityName": "南投縣",
+    "district":"中部",
     "cityLink": "NantouCounty",
+    "id":"NT",
     "image": "NantouCounty.png"
   },
   {
     "cityName": "雲林縣",
+    "district":"中部",
     "cityLink": "YunlinCounty",
+    "id":"YU",
     "image": "YunlinCounty.png"
   },
   {
     "cityName": "嘉義縣",
+    "district":"南部",
     "cityLink": "ChiayiCounty",
+    "id":"CY",
     "image": "ChiayiCounty.png"
   },
   {
     "cityName": "嘉義市",
+    "district":"南部",
     "cityLink": "Chiayi",
+    "id":"CYC",
     "image": "Chiayi.png"
   },
   {
     "cityName": "屏東縣",
+    "district":"南部",
     "cityLink": "PingtungCounty",
+    "id":"PT",
     "image": "PingtungCounty.png"
   },
   {
     "cityName": "宜蘭縣",
+    "district":"北部",
     "cityLink": "YilanCounty",
+    "id":"YL",
     "image": "YilanCounty.png"
   },
   {
     "cityName": "花蓮縣",
+    "district":"東部",
     "cityLink": "HualienCounty",
+    "id":"HL",
     "image": "HualienCounty.png"
   },
   {
     "cityName": "臺東縣",
+    "district":"東部",
     "cityLink": "TaitungCounty",
+    "id":"TT",
     "image": "TaitungCounty.png"
   },
   {
     "cityName": "金門縣",
+    "district":"離島",
     "cityLink": "KinmenCounty",
+    "id":"KM",
     "image": "KinmenCounty.png"
   },
   {
     "cityName": "澎湖縣",
+    "district":"離島",
     "cityLink": "PenghuCounty",
+    "id":"PH",
     "image": "PenghuCounty.png"
   },
   {
     "cityName": "連江縣",
+    "district":"離島",
     "cityLink": "LienchiangCounty",
+    "id":"LC",
     "image": "LienchiangCounty.png"
   }
 ]

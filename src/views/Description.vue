@@ -1,94 +1,351 @@
 <template>
-  <div class="site_info">
-    <figure class="site_info_img">
-      <img
-        v-if="siteInfo.Picture.PictureUrl1"
-        :src="siteInfo.Picture.PictureUrl1"
-        :alt="siteInfo.Picture.PictureUrl1PictureDescription1"
-      />
-      <img v-else src="@/assets/citiesImg/replacedImg2.jpg" />
-    </figure>
-    <ul class="site_info_des">
-      <h1 class="title">{{ siteInfo.Name }}</h1>
-      <li class="address">
-        <img src="@/assets/location.svg" alt="地址圖示" />
-        <span v-if="siteInfo.Address">{{ siteInfo.Address }}</span>
-        <span v-else>待更新</span>
-      </li>
-      <li class="tel">
-        <img src="@/assets/phone.svg" alt="電話圖示" />
-        <a v-if="siteInfo.Phone" href="tel:">{{ siteInfo.Phone }}</a>
-        <a v-else href="tel:">待更新</a>
-      </li>
-      <li class="time">
-        <img src="@/assets/time.svg" alt="時間圖示" />
-        <span v-if="siteInfo.OpenTime">{{ siteInfo.OpenTime }}</span>
-        <span v-else>待更新</span>
-      </li>
-      <li class="price">
-        <img src="@/assets/money.svg" alt="收費圖示" />
-        <span v-if="siteInfo.TicketInfo">{{ siteInfo.TicketInfo }}</span>
-        <span v-else>不收費</span>
-      </li>
-      <li class="remark">
-        <img src="@/assets/edit.svg" alt="編輯圖示" />
-        <span v-if="siteInfo.Remark">
-          {{ siteInfo.Remark }}
-        </span>
-        <span v-else>待更新</span>
-      </li>
-    </ul>
-    <article class="site_info_detail">
-      {{ siteInfo.DescriptionDetail }}
-      {{ siteInfo.DescriptionDetail }}
-      <!-- {{ googlePosition }} -->
-    </article>
-    <iframe
-      :src="getGoogleMap"
-      frameborder="0"
-      width="100%"
-      height="300px"
-      allowfullscreen
-    ></iframe>
-  </div>
+  <main>
+    <div class="site_info">
+      <figure class="site_info_img">
+        <button class="changePage_button" @click="this.$router.go(-1)">
+          <img src="@/assets/arrow.svg" alt="" />
+        </button>
+        <img
+          v-if="siteInfo.Picture && siteInfo.Picture.PictureUrl1"
+          :src="siteInfo.Picture.PictureUrl1"
+          :alt="siteInfo.Picture.PictureUrl1PictureDescription1"
+        />
+        <img v-else src="@/assets/citiesImg/replacedImg2.jpg" alt="替代照片" />
+      </figure>
+
+      <ul class="site_info_des">
+        <h4 class="title">{{ siteInfo.Name }}</h4>
+        <li class="address">
+          <img src="@/assets/location.svg" alt="地址圖示" />
+          <span v-if="siteInfo.Address">{{ siteInfo.Address }}</span>
+          <span v-else>待更新</span>
+        </li>
+        <li class="tel">
+          <img src="@/assets/phone.svg" alt="電話圖示" />
+          <a v-if="siteInfo.Phone" href="tel:">{{ siteInfo.Phone }}</a>
+          <a v-else href="tel:">待更新</a>
+        </li>
+        <li class="time">
+          <img src="@/assets/time.svg" alt="時間圖示" />
+          <span v-if="siteInfo.OpenTime">{{ siteInfo.OpenTime }}</span>
+          <span v-else>待更新</span>
+        </li>
+        <li class="price">
+          <img src="@/assets/money.svg" alt="收費圖示" />
+          <span v-if="siteInfo.TicketInfo">{{ siteInfo.TicketInfo }}</span>
+          <span v-else>不收費</span>
+        </li>
+        <li class="remark">
+          <img src="@/assets/edit.svg" alt="編輯圖示" />
+          <span v-if="siteInfo.Remark">
+            {{ siteInfo.Remark }}
+          </span>
+          <span v-else>待更新</span>
+        </li>
+      </ul>
+      <article class="site_info_detail">
+        {{ siteInfo.DescriptionDetail }}
+      </article>
+
+      <iframe
+        :src="googleMap"
+        frameborder="0"
+        width="100%"
+        height="300px"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <section>
+      <div v-if="nearByRestaurants" class="nearBy_area">
+        <p v-if="nearByRestaurants" class="title">附近餐廳</p>
+        <div class="thumbnail_area">
+          <Thumbnail
+            v-for="restaurant of nearByRestaurants"
+            :key="restaurant.id"
+            :restaurant="restaurant"
+            :nearByRestaurants="nearByRestaurants"
+          ></Thumbnail>
+        </div>
+      </div>
+
+      <div v-if="nearByHotels" class="nearBy_area">
+        <p v-if="nearByHotels" class="title">附近住宿</p>
+        <div class="thumbnail_area">
+          <Thumbnail
+            v-for="restaurant of nearByHotels"
+            :key="restaurant.id"
+            :restaurant="restaurant"
+            :nearByRestaurants="nearByHotels"
+          ></Thumbnail>
+        </div>
+      </div>
+      <p v-if="nearBySites" class="title">附近景點</p>
+      <div class="thumbnail_area">
+        <Thumbnail
+          v-for="restaurant of nearBySites"
+          :key="restaurant.id"
+          :restaurant="restaurant"
+          :nearByRestaurants="nearBySitess"
+        ></Thumbnail>
+      </div>
+
+      <img id="duck" src="@/assets/哪裡鴨.svg" alt="" />
+    </section>
+  </main>
 </template>
 
 <script>
-// import citySite from '@/components/CitySite.vue'
+import Thumbnail from '@/components/Thumbnail.vue'
 import getCitysiteInfo from '@/services/getCitysiteInfo.js'
 
 export default {
-  props: ['name', 'id', 'city', 'description', 'cityLink'],
+  components: {
+    Thumbnail,
+  },
+  props: ['name', 'id', 'city', 'cityLink'],
   data() {
     return {
-      event: null,
       siteInfo: {},
-      // googlePosition: [
-      //   this.siteInfo.Position.PositionLon,
-      //   this.siteInfo.Position.PositionLat,
-      // ],
+      distance: 5000,
+      nearByRestaurants: [],
+      nearByHotels: [],
+      nearBySites: null,
+      googleMap: '',
     }
   },
-  computed: {
-    getGoogleMap() {
-      return `http://maps.google.com/maps?q=${this.siteInfo.Position.PositionLat},${this.siteInfo.Position.PositionLon}&z=16&output=embed`
+
+  // created() {
+  //   console.log(this.cityLink)
+  //   console.log(this.id)
+  //   getCitysiteInfo
+  //     .getSite(this.cityLink, this.id)
+  //     .then((res) => {
+  //       this.siteInfo = res.data[0]
+  //       console.log('res.data[0]', res.data[0]) //check only
+  //       return res.data[0].Position
+  //     })
+  //     .then((siteInfo) => {
+  //       // console.log(siteInfo) //check only
+  //       getCitysiteInfo
+  //         .getNearRestaurant(
+  //           siteInfo.PositionLat,
+  //           siteInfo.PositionLon,
+  //           this.distance,
+  //         )
+  //         .then((res) => (this.nearByRestaurants = res.data))
+  //       return siteInfo
+  //     })
+  //     .then((siteInfo) => {
+  //       // console.log(siteInfo) //check only
+  //       getCitysiteInfo
+  //         .getHotel(siteInfo.PositionLat, siteInfo.PositionLon, this.distance)
+  //         .then((res) => (this.nearByHotels = res.data))
+  //       return siteInfo
+  //     })
+  //     .then((siteInfo) => {
+  //       // console.log(siteInfo) //check only
+  //       let googleMapAddress = `http://maps.google.com/maps?q=${siteInfo.PositionLat},${siteInfo.PositionLon}&z=16&output=embed`
+  //       // console.log('----138------', googleMapAddress) //check only
+  //       this.googleMap = googleMapAddress
+  //     })
+  //     .catch((err) => console.log(err))
+  // },
+  methods: {
+    getSite() {
+      console.log('getSite')
+      return getCitysiteInfo.getSite(this.cityLink, this.id).then((res) => {
+        this.siteInfo = res.data[0]
+        return res.data[0].Position
+      })
+    },
+    getHotel() {
+      console.log('getHotel')
+      return getCitysiteInfo.getHotel(this.cityLink, this.id).then((res) => {
+        console.log(res)
+        this.siteInfo = res.data
+        return res.data[0].Position
+      })
+    },
+    getRestaurant() {
+      console.log('getRestaurant')
+      return getCitysiteInfo
+        .getRestaurant(this.cityLink, this.id)
+        .then((res) => {
+          console.log(res)
+          this.siteInfo = res.data[0]
+          return res.data[0].Position
+        })
+    },
+    getNearRestaurant(lat, lon, distance) {
+      console.log('check position -----', this.positionLat, this.positionLon)
+      return getCitysiteInfo
+        .getNearRestaurant(lat, lon, distance)
+        .then((res) => (this.nearByRestaurants = res.data))
+    },
+    getNearSites(lat, lon, distance) {
+      return getCitysiteInfo
+        .getNearSites(lat, lon, distance)
+        .then((res) => (this.nearBySites = res.data))
+    },
+    getNearHotel(lat, lon, distance) {
+      return getCitysiteInfo
+        .getNearHotel(lat, lon, distance)
+        .then((res) => (this.nearByHotels = res.data))
+    },
+    getGoogleMap(positionLat, positionLon) {
+      let googleMapAddress = `http://maps.google.com/maps?q=${positionLat},${positionLon}&z=16&output=embed`
+      this.googleMap = googleMapAddress
     },
   },
   created() {
-    getCitysiteInfo
-      .getSite(this.cityLink, this.id)
-      .then((res) => (this.siteInfo = res.data[0]))
-      .catch((err) => console.log(err))
+    console.log('created')
+    if (this.id.startsWith('C1')) {
+      console.log('景點')
+      this.getSite()
+        .then((res) => {
+          console.log(res, '呼叫餐廳')
+          this.getNearRestaurant(
+            res.PositionLat,
+            res.PositionLon,
+            this.distance,
+          )
+          return res
+        })
+        .then((res) => {
+          console.log(res, '呼叫住宿')
+          this.getNearHotel(res.PositionLat, res.PositionLon, this.distance)
+          return res
+        })
+        .then((res) => {
+          this.getGoogleMap(res.PositionLat, res.PositionLon)
+        })
+      return
+    }
+    // if (this.id.startsWith('C3')) {
+    //   console.log('餐廳')
+    //   this.getRestaurant()
+    //     .then((res) => {
+    //       console.log(res, '呼叫住宿')
+    //       this.getNearHotel(
+    //         res.PositionLat,
+    //         res.PositionLon,
+    //         this.distance,
+    //       ).then((res) => console.log(res))
+    //       return res
+    //     })
+    //     .then((res) => {
+    //       console.log(res, '呼叫景點')
+    //       this.getNearSites(res.PositionLat, res.PositionLon, this.distance)
+    //       return res
+    //     })
+    //     .then((res) => {
+    //       console.log(res)
+    //       this.getGoogleMap(res.PositionLat, res.PositionLon)
+    //     })
+    //   return
+    // }
+    // if (this.id.startsWith('C4')) {
+    //   console.log('住宿')
+    //   this.getHotel()
+    //     .then((res) => {
+    //       console.log(res, '呼叫餐廳')
+    //       this.getNearRestaurant(
+    //         res.PositionLat,
+    //         res.PositionLon,
+    //         this.distance,
+    //       )
+    //       return res
+    //     })
+    //     .then((res) => {
+    //       console.log(res, '呼叫景點')
+    //       this.getNearSites(res.PositionLat, res.PositionLon, this.distance)
+    //       return res
+    //     })
+    //     .then((res) => {
+    //       console.log(res)
+    //       this.getGoogleMap(res.PositionLat, res.PositionLon)
+    //     })
+    //   return
+    // }
   },
+  beforeRouteUpdate() {
+    console.log('jump')
+    console.log(this.$router.params.id)
+    this.reload()
+  },
+  //   // if (this.id.startsWith('C3')) {
+  //   //   this.getRestaurant()
+  //   //     .then((res) => {
+  //   //       this.getNearHotel(
+  //   //         res.PositionLat,
+  //   //         res.PositionLon,
+  //   //         this.distance,
+  //   //       ).then((res) => console.log(res))
+  //   //       return res
+  //   //     })
+  //   //     .then((res) => {
+  //   //       this.getNearRestaurant(
+  //   //         res.PositionLat,
+  //   //         res.PositionLon,
+  //   //         this.distance,
+  //   //       )
+  //   //       return res
+  //   //     })
+  //   //     .then((res) => {
+  //   //       console.log(res)
+  //   //       this.getGoogleMap(res.PositionLat, res.PositionLon)
+  //   //     })
+  //   //   return
+  //   // }
+  //   // if (this.id.startsWith('C4')) {
+  //   //   console.log('住宿')
+  //   //   this.getHotel()
+  //   //     .then((res) => {
+  //   //       console.log(res, '呼叫餐廳')
+  //   //       this.getNearRestaurant(
+  //   //         res.PositionLat,
+  //   //         res.PositionLon,
+  //   //         this.distance,
+  //   //       )
+  //   //       return res
+  //   //     })
+  //   //     .then((res) => {
+  //   //       console.log(res, '呼叫景點')
+  //   //       this.getNearHotel(res.PositionLat, res.PositionLon, this.distance)
+  //   //       return res
+  //   //     })
+  //   //     .then((res) => {
+  //   //       console.log(res)
+  //   //       this.getGoogleMap(res.PositionLat, res.PositionLon)
+  //   //     })
+  //   //   return
+  //   // }
+  // },
 }
 </script>
 
 <style lang="scss" scoped>
+.thumbnail_area {
+  display: flex;
+  gap: 10px;
+  overflow: scroll;
+}
 .site_info {
-  // padding: 0 20px;
   figure {
     height: 450px;
     margin-bottom: 20px;
+    position: relative;
+    .changePage_button {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: white;
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      cursor: pointer;
+    }
     img {
       width: 100%;
       height: 100%;
@@ -96,34 +353,51 @@ export default {
       object-position: center center;
     }
   }
-  ul {
-    display: flex;
-    flex-direction: column;
-    text-align: start;
-    margin: 0 40px 20px;
-    > * {
-      margin-bottom: 20px;
-    }
-    > img {
-      margin-right: 10px;
-    }
-
-    .address {
-    }
-    .copy_button {
-    }
-    .tel {
-    }
-    .time {
-    }
-    .price {
-    }
-    .remark {
-    }
-  }
-
   article {
     margin: 0 40px 20px;
+    letter-spacing: 1px;
+    &:first-letter {
+      font-size: 28px;
+      font-weight: 900;
+    }
+  }
+}
+
+.site_info_des {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  margin: 0 40px 20px;
+
+  h4 {
+    font-size: 28px;
+  }
+  > * {
+    margin-bottom: 20px;
+  }
+  li {
+    > img {
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    span {
+      vertical-align: middle;
+    }
+  }
+}
+
+section {
+  background: orange;
+  padding: 20px 0 10px 0;
+  position: relative;
+}
+.nearBy_area {
+  .title {
+    font-size: 24px;
+    font-weight: 800;
+    padding-left: 40px;
+    text-align: start;
+    color: black;
   }
 }
 </style>

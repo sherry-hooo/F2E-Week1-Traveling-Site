@@ -5,14 +5,16 @@
         <img src="./assets/logo.svg" alt="要去哪裡鴨logo" />
       </h1>
     </router-link>
-    <!-- <router-link to="/search">Search</router-link> -->
-    <router-link to="/about">Search</router-link>
   </header>
   <router-view />
 
   <footer>
     <p class="about">關於我們</p>
     <p>立志成為幫忙發現台灣之美的眼睛 幫您找出下一個旅遊景點</p>
+    <div>
+      <p>UI Design：Rex Lai</p>
+      <p>Web Design：Hooo.</p>
+    </div>
     <p>Copyright &copy; 2021 要去哪裡鴨. All rights reserved.</p>
   </footer>
 </template>
@@ -26,6 +28,13 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+* {
+  font-size: 16px;
+  @media (min-width: 992px) {
+    font-size: 20px;
+  }
 }
 
 #nav {
@@ -59,15 +68,15 @@
 }
 
 footer {
-  background: #f2f2f2;
   display: flex;
   flex-direction: column;
   justify-items: start;
-  align-items: flex-start;
+  align-items: start;
+  background: #f2f2f2;
   padding: 20px 30px;
-
-  p + p {
-    margin-top: 20px;
+  gap: 10px;
+  p {
+    text-align: start;
   }
   .about {
     color: #f79c31;

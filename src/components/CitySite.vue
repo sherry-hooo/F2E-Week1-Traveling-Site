@@ -45,9 +45,7 @@
 export default {
   name: 'citySite',
   props: ['citySite', 'cityLink'],
-  data() {
-    console.log(this.citySite.OpenTime)
-  },
+  data() {},
 }
 </script>
 
@@ -55,7 +53,8 @@ export default {
 .card {
   // outline: 1px solid green;  //delete
   &:hover {
-    outline: 1px solid green;  //delete
+    // border: 1px solid grey; //delete
+    // border-radius: 20px; //delete
   }
 }
 .citySite_card {
@@ -74,6 +73,7 @@ export default {
     flex: 0 0 auto;
     margin-right: 20px;
     overflow: hidden;
+    border-radius: 20px; //delete
 
     img {
       width: 100%;

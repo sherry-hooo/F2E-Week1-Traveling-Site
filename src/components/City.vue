@@ -1,11 +1,12 @@
 <template>
   <router-link
+    class="city"
     :to="{
       name: 'search',
-      params: { cityName: city.cityName, cityLink: city.cityLink },
+      params: { cityLink: city.cityLink },
     }"
   >
-    <div class="city_thumbnail">
+    <div>
       {{ city.cityName }}
     </div>
   </router-link>
@@ -16,44 +17,31 @@ export default {
   name: 'city',
   props: ['city'],
   data() {
-    // const image = require(`@/assets/${this.city.image}`);
-    // console.log(`url(${image})`)
     return {
       events: null,
-      // cityImg: `url('${image}')`,
     }
   },
 }
 </script>
 
 <style lang="scss" scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+.city {
+  flex: 0 1 auto;
+  padding: 20px 10px;
+  border-radius: 50px;
+  background: #91b4c6;
+  font-weight: 500;
+  color: rgb(80, 77, 77);
 
-.city_thumbnail {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 160px;
-  height: 160px;
-  border-radius: 24px;
+  &:hover {
+    background: orange;
+  }
 
-  font-weight: 600;
-  color: white;
-  // background-image: v-bind(cityImg);
-  background-color: #91b4c6;
-  background-repeat: no-repeat;
+  @media (min-width: 768px) {
+    padding: 35px 20px;
+    font-size: 20px;
+  }
+  @media (min-width: 992px) {
+  }
 }
 </style>

@@ -1,24 +1,11 @@
 <template>
   <div class="menu">
-    <div
-      v-if="chosedCity"
-      @click.self="openMenu = !openMenu"
-      class="custom_select"
-    >
+    <div v-if="chosedCity" @click="openMenu = !openMenu" class="custom_select">
       {{ chosedCity }}
       <img
-        :style="toggle"
+        :style="rotate"
         class="toggle_icon"
-        src="@/assets/arrow.svg"
-        alt="toggle icon"
-      />
-    </div>
-    <div v-else @click.self="openMenu = !openMenu" class="custom_select">
-      請選擇縣市
-      <img
-        :style="toggle"
-        class="toggle_icon"
-        src="@/assets/arrow.svg"
+        src="@/assets/toggle.svg"
         alt="toggle icon"
       />
     </div>
@@ -34,7 +21,7 @@
           type="radio"
           :id="city.cityLink"
           :value="city.cityName"
-          v-model="chosedCity"
+          @click="toggleMenu"
         />
       </label>
     </div>
@@ -53,7 +40,7 @@ export default {
   data() {
     // console.log(JSON.stringify(this.citiesList))
     return {
-      chosedCity: this.cityResult ? this.cityResult : '',
+      chosedCity: this.cityResult ? this.cityResult : '請選擇縣市',
       cityLink: '',
       openMenu: false,
     }
@@ -62,26 +49,28 @@ export default {
     citiesList() {
       return citiesList
     },
-    toggle() {
+    rotate() {
       return {
         transform: this.openMenu ? `rotate(180deg)` : '',
       }
     },
     getChosedCityLink() {
+      if (this.chosedCity === '請選擇縣市') {
+        return
+      }
       return this.citiesList.find((city) => city.cityName === this.chosedCity)
         .cityLink
     },
   },
   methods: {
+    toggleMenu(event) {
+      this.chosedCity = event.target.value
+      this.openMenu = !this.openMenu
+    },
     goSearch(city) {
       if (this.chosedCity === '請選擇縣市') {
         return
       }
-      // let cityLink = this.citiesList.find(
-      //   (city) => city.cityName === this.chosedCity,
-      // ).cityLink
-      // console.log(cityLink)
-      console.log(city)
       this.$router.push(`/search/${city}`)
       // location.reload()
     },
@@ -108,8 +97,9 @@ export default {
 
     display: flex;
     justify-content: space-between;
-    img {
+    .toggle_icon {
       width: 16px;
+      pointer-events: none;
     }
   }
   .search_button {
@@ -117,7 +107,9 @@ export default {
     height: 60px;
     border-radius: 24px;
     outline: none;
-    background: url('../assets/放大鏡.svg') 60%/30px 30px no-repeat, #f79c31;
+    background: url(/img/放大鏡.e619c7da.svg) bottom 50% left 70% / 30px 40px
+        no-repeat,
+      #f79c31;
     font-size: 18px;
     text-align: center;
 
@@ -132,29 +124,42 @@ export default {
 .cities_list {
   width: 80%;
   border-radius: 24px;
-  padding: 20px 40px;
+  padding: 20px 10px;
   position: absolute;
   z-index: 999;
   top: 75px;
   background: white;
+  border: 1px solid #aeaeae;
 
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   row-gap: 10px;
   justify-items: center;
-
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (min-width: 768px) {
+    padding: 20px 40px;
+    grid-template-columns: repeat(4, 1fr);
+  }
   .radio {
     display: none;
   }
   label {
     flex: 1 1 auto;
-    border: 1px solid #aeaeae;
     border-radius: 20px;
     width: fit-content;
-    padding: 15px 30px;
+    padding: 10px;
     &:hover {
       background: #93b6c8;
       border: #93b6c8;
+    }
+    @media (min-width: 576px) {
+      font-size: 18px;
+      padding: 15px 30px;
+    }
+    @media (min-width: 768px) {
+      // border: 1px solid #aeaeae;
     }
   }
 }
