@@ -194,7 +194,7 @@ export default {
         .then((res) => (this.nearByHotels = res.data))
     },
     getGoogleMap(positionLat, positionLon) {
-      let googleMapAddress = `http://maps.google.com/maps?q=${positionLat},${positionLon}&z=16&output=embed`
+      let googleMapAddress = `https://maps.google.com/maps?q=${positionLat},${positionLon}&z=16&output=embed`
       this.googleMap = googleMapAddress
     },
   },
