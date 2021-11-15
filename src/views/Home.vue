@@ -93,9 +93,7 @@ export default {
 
 <style lang="scss" scoped>
 #duck {
-  // width: 150px;
   animation: walking 1s linear infinite alternate;
-  // position: absolute;
 }
 
 @keyframes walking {
@@ -106,6 +104,7 @@ export default {
     transform: rotate(-3deg);
   }
 }
+
 // banner
 .banner {
   box-sizing: border-box;
@@ -131,7 +130,7 @@ export default {
   }
 
   figure {
-    align-self: end;
+    align-self: flex-end;
     transform: translateY(20%);
     @media (min-width: 576px) {
       transform: translateY(15%);
