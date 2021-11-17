@@ -42,11 +42,12 @@ export default {
     )
   },
   getHotel(city, id) {
-    console.log(
-      apiClient.get(
-        '/Hotel/' + city + '?$filter=ID%20eq%20' + `'${id}'` + '&$format=JSON',
-      ),
-    )
+    // console.log(city,id)
+    // console.log(
+    //   apiClient.get(
+    //     '/Hotel/' + city + '?$filter=ID%20eq%20' + `'${id}'` + '&$format=JSON',
+    //   ),
+    // )
     return apiClient.get(
       '/Hotel/' + city + '?$filter=ID%20eq%20' + `'${id}'` + '&$format=JSON',
     )

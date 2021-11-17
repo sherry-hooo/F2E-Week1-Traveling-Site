@@ -115,42 +115,6 @@ export default {
     }
   },
 
-  // created() {
-  //   console.log(this.cityLink)
-  //   console.log(this.id)
-  //   getCitysiteInfo
-  //     .getSite(this.cityLink, this.id)
-  //     .then((res) => {
-  //       this.siteInfo = res.data[0]
-  //       console.log('res.data[0]', res.data[0]) //check only
-  //       return res.data[0].Position
-  //     })
-  //     .then((siteInfo) => {
-  //       // console.log(siteInfo) //check only
-  //       getCitysiteInfo
-  //         .getNearRestaurant(
-  //           siteInfo.PositionLat,
-  //           siteInfo.PositionLon,
-  //           this.distance,
-  //         )
-  //         .then((res) => (this.nearByRestaurants = res.data))
-  //       return siteInfo
-  //     })
-  //     .then((siteInfo) => {
-  //       // console.log(siteInfo) //check only
-  //       getCitysiteInfo
-  //         .getHotel(siteInfo.PositionLat, siteInfo.PositionLon, this.distance)
-  //         .then((res) => (this.nearByHotels = res.data))
-  //       return siteInfo
-  //     })
-  //     .then((siteInfo) => {
-  //       // console.log(siteInfo) //check only
-  //       let googleMapAddress = `http://maps.google.com/maps?q=${siteInfo.PositionLat},${siteInfo.PositionLon}&z=16&output=embed`
-  //       // console.log('----138------', googleMapAddress) //check only
-  //       this.googleMap = googleMapAddress
-  //     })
-  //     .catch((err) => console.log(err))
-  // },
   methods: {
     getSite() {
       console.log('getSite')
@@ -159,26 +123,19 @@ export default {
         return res.data[0].Position
       })
     },
-    getHotel() {
+    async getHotel(city, id) {
       console.log('getHotel')
-      return getCitysiteInfo.getHotel(this.cityLink, this.id).then((res) => {
-        console.log(res)
-        this.siteInfo = res.data
-        return res.data[0].Position
-      })
+      let hotel = await getCitysiteInfo.getHotel(city, id)
+      console.log(hotel.data[0])
+      this.siteInfo = hotel.data[0]
     },
-    getRestaurant() {
-      console.log('getRestaurant')
-      return getCitysiteInfo
-        .getRestaurant(this.cityLink, this.id)
-        .then((res) => {
-          console.log(res)
-          this.siteInfo = res.data[0]
-          return res.data[0].Position
-        })
+    async getRestaurant(city, id) {
+      console.log('get restaurant')
+      let restaurant = await getCitysiteInfo.getRestaurant(city, id)
+      console.log(restaurant.data[0])
+      this.siteInfo = restaurant.data[0]
     },
     getNearRestaurant(lat, lon, distance) {
-      console.log('check position -----', this.positionLat, this.positionLon)
       return getCitysiteInfo
         .getNearRestaurant(lat, lon, distance)
         .then((res) => (this.nearByRestaurants = res.data))
@@ -222,106 +179,17 @@ export default {
         })
       return
     }
-    // if (this.id.startsWith('C3')) {
-    //   console.log('餐廳')
-    //   this.getRestaurant()
-    //     .then((res) => {
-    //       console.log(res, '呼叫住宿')
-    //       this.getNearHotel(
-    //         res.PositionLat,
-    //         res.PositionLon,
-    //         this.distance,
-    //       ).then((res) => console.log(res))
-    //       return res
-    //     })
-    //     .then((res) => {
-    //       console.log(res, '呼叫景點')
-    //       this.getNearSites(res.PositionLat, res.PositionLon, this.distance)
-    //       return res
-    //     })
-    //     .then((res) => {
-    //       console.log(res)
-    //       this.getGoogleMap(res.PositionLat, res.PositionLon)
-    //     })
-    //   return
-    // }
-    // if (this.id.startsWith('C4')) {
-    //   console.log('住宿')
-    //   this.getHotel()
-    //     .then((res) => {
-    //       console.log(res, '呼叫餐廳')
-    //       this.getNearRestaurant(
-    //         res.PositionLat,
-    //         res.PositionLon,
-    //         this.distance,
-    //       )
-    //       return res
-    //     })
-    //     .then((res) => {
-    //       console.log(res, '呼叫景點')
-    //       this.getNearSites(res.PositionLat, res.PositionLon, this.distance)
-    //       return res
-    //     })
-    //     .then((res) => {
-    //       console.log(res)
-    //       this.getGoogleMap(res.PositionLat, res.PositionLon)
-    //     })
-    //   return
-    // }
   },
-  beforeRouteUpdate() {
+  beforeRouteUpdate(to) {
     console.log('jump')
-    console.log(this.$router.params.id)
-    this.reload()
+    let nextId = to.params.id
+    let nextCity = to.params.city
+    if (nextId.startsWith('C4')) {
+      this.getHotel(nextCity, nextId)
+    } else {
+      this.getRestaurant(nextCity, nextId)
+    }
   },
-  //   // if (this.id.startsWith('C3')) {
-  //   //   this.getRestaurant()
-  //   //     .then((res) => {
-  //   //       this.getNearHotel(
-  //   //         res.PositionLat,
-  //   //         res.PositionLon,
-  //   //         this.distance,
-  //   //       ).then((res) => console.log(res))
-  //   //       return res
-  //   //     })
-  //   //     .then((res) => {
-  //   //       this.getNearRestaurant(
-  //   //         res.PositionLat,
-  //   //         res.PositionLon,
-  //   //         this.distance,
-  //   //       )
-  //   //       return res
-  //   //     })
-  //   //     .then((res) => {
-  //   //       console.log(res)
-  //   //       this.getGoogleMap(res.PositionLat, res.PositionLon)
-  //   //     })
-  //   //   return
-  //   // }
-  //   // if (this.id.startsWith('C4')) {
-  //   //   console.log('住宿')
-  //   //   this.getHotel()
-  //   //     .then((res) => {
-  //   //       console.log(res, '呼叫餐廳')
-  //   //       this.getNearRestaurant(
-  //   //         res.PositionLat,
-  //   //         res.PositionLon,
-  //   //         this.distance,
-  //   //       )
-  //   //       return res
-  //   //     })
-  //   //     .then((res) => {
-  //   //       console.log(res, '呼叫景點')
-  //   //       this.getNearHotel(res.PositionLat, res.PositionLon, this.distance)
-  //   //       return res
-  //   //     })
-  //   //     .then((res) => {
-  //   //       console.log(res)
-  //   //       this.getGoogleMap(res.PositionLat, res.PositionLon)
-  //   //     })
-  //   //   return
-  //   // }
-  // },
 }
 </script>
 

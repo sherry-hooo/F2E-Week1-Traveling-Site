@@ -122,10 +122,9 @@ export default {
 
   .slogan {
     align-self: center;
-    width: 80%;
+    width: 30%;
     @media (min-width: 768px) {
       align-self: flex-start;
-      width: 50%;
     }
   }
 
@@ -140,12 +139,11 @@ export default {
 
 .subtitle {
   margin: 0 auto 20px;
-  width: 70%;
+  width: 50%;
   @media (min-width: 576px) {
-    width: 30%;
+    width: 200px;
   }
   @media (min-width: 768px) {
-    width: 25%;
     margin-left: 40px;
   }
   img {

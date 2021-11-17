@@ -268,6 +268,15 @@
 <script>
 export default {
   props: ['hoveredCity'],
+  data() {
+    return {
+      hoveredArea: '',
+    }
+  },
+
+  methods: {
+    
+  },
 }
 </script>
 
@@ -280,8 +289,6 @@ path {
     fill: orange;
   }
 }
-
-
 
 #LC {
   transform: scale(1.9) translateY(50px) translateX(-500px);
