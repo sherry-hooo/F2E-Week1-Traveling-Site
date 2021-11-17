@@ -116,9 +116,8 @@ export default {
   },
 
   methods: {
-    getSite() {
-      console.log('getSite')
-      return getCitysiteInfo.getSite(this.cityLink, this.id).then((res) => {
+    getSite(city, id) {
+      return getCitysiteInfo.getSite(city, id).then((res) => {
         this.siteInfo = res.data[0]
         return res.data[0].Position
       })
@@ -155,30 +154,42 @@ export default {
       this.googleMap = googleMapAddress
     },
   },
-  created() {
+  // created() {
+  //   console.log('created')
+  //   console.log(this.cityLink, this.id)
+  //   if (this.id.startsWith('C1')) {
+  //     console.log('景點')
+  //     this.getSite()
+  //       .then((res) => {
+  //         console.log(res, '呼叫餐廳')
+  //         this.getNearRestaurant(
+  //           res.PositionLat,
+  //           res.PositionLon,
+  //           this.distance,
+  //         )
+  //         return res
+  //       })
+  //       .then((res) => {
+  //         console.log(res, '呼叫住宿')
+  //         this.getNearHotel(res.PositionLat, res.PositionLon, this.distance)
+  //         return res
+  //       })
+  //       .then((res) => {
+  //         this.getGoogleMap(res.PositionLat, res.PositionLon)
+  //       })
+  //     return
+  //   }
+  // },
+  async created() {
     console.log('created')
-    if (this.id.startsWith('C1')) {
-      console.log('景點')
-      this.getSite()
-        .then((res) => {
-          console.log(res, '呼叫餐廳')
-          this.getNearRestaurant(
-            res.PositionLat,
-            res.PositionLon,
-            this.distance,
-          )
-          return res
-        })
-        .then((res) => {
-          console.log(res, '呼叫住宿')
-          this.getNearHotel(res.PositionLat, res.PositionLon, this.distance)
-          return res
-        })
-        .then((res) => {
-          this.getGoogleMap(res.PositionLat, res.PositionLon)
-        })
-      return
-    }
+    console.log(this.cityLink, this.id)
+    let res = await this.getSite(this.cityLink, this.id)
+    let result = Promise.allSettled([
+      this.getNearHotel(res.PositionLat, res.PositionLon, this.distance),
+      this.getNearRestaurant(res.PositionLat, res.PositionLon, this.distance),
+      this.getGoogleMap(res.PositionLat, res.PositionLon),
+    ])
+    console.log(result)
   },
   beforeRouteUpdate(to) {
     console.log('jump')
