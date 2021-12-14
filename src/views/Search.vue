@@ -1,10 +1,11 @@
 <template>
   <main>
-    <section>
-      <Menu :cityResult="cityName" />
+    <aside>
       <div class="search_title">
         <h3>{{ cityName }}</h3>
       </div>
+    </aside>
+    <section>
       <div class="search_filters">
         <!-- <i class="fas fa-map-marker-alt fa-fw"></i> -->
         <router-link
@@ -31,19 +32,12 @@
 <script>
 import citiesList from "@/assets/data/citiesList.json";
 import getApi from "@/services/getApi.js";
-import Menu from "@/components/Menu.vue";
 
 export default {
-  components: {
-    Menu,
-  },
+  components: {},
   props: ["cityLink", "cityName"],
   data() {
-    return {
-      displayQty: 30,
-      skip: 0,
-      citySitesList: null,
-    };
+    return {};
   },
   computed: {
     citiesList() {
@@ -66,34 +60,33 @@ export default {
         .catch((err) => console.log(err));
     },
   },
-  watch: {
-    cityName() {
-      console.log("watch");
-      getApi
-        .getCity(this.$route.params.cityLink, this.displayQty, this.skip)
-        .then((res) => (this.citySitesList = res.data))
-        .catch((err) => console.log(err));
-    },
-  },
-  created() {
-    getApi
-      .getCity(this.$route.params.cityLink, this.displayQty, this.skip)
-      .then((res) => (this.citySitesList = res.data))
-      .catch((err) => console.log(err));
-  },
+  watch: {},
 };
 </script>
 
 <style lang="scss" scoped>
 main {
   margin-bottom: 20px;
-}
-section {
   display: flex;
   flex-direction: column;
-  padding: 20px 20px;
-  background: #f7f7f7;
+  @include breakpoint.desktop {
+    height: 100vh;
+    flex-direction: row;
+    aside {
+      flex: 1 1 40%;
+      width: 40%;
+    }
+    section {
+      flex: 1 1 60%;
+      width: 60%;
+      overflow: scroll;
+      z-index: -1;
+    }
+  }
+}
 
+aside {
+  padding: 10px;
   .search_title {
     padding: 25px;
     margin-bottom: 10px;
@@ -101,38 +94,47 @@ section {
       font-size: 40px;
     }
   }
+}
+section {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: #f7f7f7;
+  .search_filters {
+    padding: 20px 0;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    a {
+      border: 3px solid black;
+      border-radius: 50%;
+      padding: 20px;
+      color: black;
+      &.router-link-exact-active {
+        background: orange;
+      }
+      i {
+        font-size: 30px;
+      }
+    }
+  }
   .search_content {
-    padding: 20px;
+    padding: 10px;
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 20px;
 
-    @media (min-width: 576px) {
+    @include breakpoint.mobile {
       grid-template-columns: repeat(2, 1fr);
       column-gap: 30px;
     }
-    @media (min-width: 768px) {
+    @include breakpoint.tablet {
       grid-template-columns: repeat(3, 1fr);
+      column-gap: 20px;
     }
-  }
-}
-
-::v-deep .menu {
-  justify-content: space-between;
-  flex-direction: row;
-  margin: 0 0 40px 0;
-  .custom_select {
-    flex: 1 1 70%;
-  }
-  .search_button {
-    flex: 1 1 30%;
-    background: url(/img/放大鏡.e619c7da.svg) top 30% left 90% / 15px 15px
-        no-repeat,
-      #f79c31;
-    @media (min-width: 576px) {
-      background: url(/img/放大鏡.e619c7da.svg) bottom 50% left 80% / 30px 40px
-          no-repeat,
-        #f79c31;
+    @include breakpoint.desktop {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 }
@@ -154,26 +156,6 @@ section {
     background: #aeaeae;
     color: white;
     transition: all 0.5s;
-  }
-}
-
-.search_filters {
-  padding: 20px 0;
-  margin-bottom: 10px;
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  a {
-    border: 3px solid black;
-    border-radius: 50%;
-    padding: 20px;
-    color: black;
-    &.router-link-exact-active {
-      background: orange;
-    }
-    i {
-      font-size: 30px;
-    }
   }
 }
 </style>
