@@ -1,15 +1,15 @@
 <template>
-  <div class="menu">
-    <div v-if="chosedCity" @click="openMenu = !openMenu" class="custom_select">
+  <div class="menu" @click="toggleMenu">
+    <div class="dropDown_menu">
       {{ chosedCity }}
       <img
         :style="rotate"
         class="toggle_icon"
-        src="@/assets/toggle.svg"
+        src="@/assets/img/toggle.svg"
         alt="toggle icon"
       />
     </div>
-    <div v-if="openMenu" class="cities_list">
+    <div v-if="openMenu" class="dropDown_select">
       <label
         v-for="city of citiesList"
         :key="city.id"
@@ -21,7 +21,7 @@
           type="radio"
           :id="city.cityLink"
           :value="city.cityName"
-          @click="toggleMenu"
+          @click="chooseCity"
         />
       </label>
     </div>
@@ -32,85 +32,99 @@
 </template>
 
 <script>
-import citiesList from '@/assets/data/citiesList.json'
+import citiesList from "@/assets/data/citiesList.json";
 
 export default {
-  name: 'Menu',
-  props: ['cityResult'],
+  name: "Menu",
+  props: ["cityResult"],
   data() {
-    // console.log(JSON.stringify(this.citiesList))
     return {
-      chosedCity: this.cityResult ? this.cityResult : '請選擇縣市',
-      cityLink: '',
+      chosedCity: this.cityResult ? this.cityResult : "請選擇縣市",
+      cityLink: "",
       openMenu: false,
-    }
+    };
   },
   computed: {
     citiesList() {
-      return citiesList
+      return citiesList;
     },
     rotate() {
       return {
-        transform: this.openMenu ? `rotate(180deg)` : '',
-      }
+        transform: this.openMenu ? `rotate(180deg)` : "",
+      };
     },
     getChosedCityLink() {
-      if (this.chosedCity === '請選擇縣市') {
-        return
+      if (this.chosedCity === "請選擇縣市") {
+        return;
       }
       return this.citiesList.find((city) => city.cityName === this.chosedCity)
-        .cityLink
+        .cityLink;
     },
   },
   methods: {
-    toggleMenu(event) {
-      this.chosedCity = event.target.value
-      this.openMenu = !this.openMenu
+    toggleMenu() {
+      this.openMenu = !this.openMenu;
+      this.$emit("openMenu", this.openMenu);
     },
-    goSearch(city) {
-      if (this.chosedCity === '請選擇縣市') {
-        return
+    chooseCity(event) {
+      this.chosedCity = event.target.value;
+    },
+    goSearch(cityLink) {
+      if (this.chosedCityLink === "請選擇縣市") {
+        return;
       }
-      this.$router.push(`/search/${city}`)
-      // location.reload()
+      this.$router.push({ name: "Search", params: { cityLink: cityLink } });
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .menu {
+  width: 100%;
+  padding: 10px;
+  position: relative;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 20px;
-  margin-top: 40px;
-  position: relative;
 
-  .custom_select {
-    width: 80%;
-    height: 60px;
-    padding: 20px 30px;
-    border-radius: 24px;
+  @include breakpoint.mobile {
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .dropDown_menu {
+    font-size: 16px;
     background: #ffffff;
-    font-size: 18px;
+    box-sizing: border-box;
+    width: 150px;
+    padding: 5px;
+    border-radius: 24px;
+    border: 1px solid black;
+    cursor: pointer;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: center;
     .toggle_icon {
-      width: 16px;
+      width: 12px;
       pointer-events: none;
+    }
+    @include breakpoint.mobile {
+      height: 100%;
+      width: 200px;
     }
   }
   .search_button {
-    width: 80%;
-    height: 60px;
+    font-size: 16px;
+    box-sizing: border-box;
+    width: 150px;
     border-radius: 24px;
+    padding: 5px;
     outline: none;
     background: url(/img/放大鏡.e619c7da.svg) bottom 50% left 70% / 30px 40px
         no-repeat,
       #f79c31;
-    font-size: 18px;
     text-align: center;
 
     &:hover {
@@ -118,18 +132,23 @@ export default {
       transform: translate(1px, -1px);
       transition: all 0.3s;
     }
+    @include breakpoint.mobile {
+      height: 100%;
+    }
   }
 }
 
-.cities_list {
-  width: 80%;
-  border-radius: 24px;
+.dropDown_select {
+  background: white;
+  width: 100%;
+  border-bottom: 1px solid black;
   padding: 20px 10px;
   position: absolute;
-  z-index: 999;
-  top: 75px;
-  background: white;
-  border: 1px solid #aeaeae;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  right: 0;
+  transition: all 0.4s ease-in-out;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);

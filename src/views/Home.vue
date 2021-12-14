@@ -1,20 +1,24 @@
 <template>
   <main class="home">
-    <div class="banner">
+    <div class="main_bg"></div>
+    <section class="banner">
       <img
         class="slogan"
-        src="@/assets/slogan.svg"
+        src="@/assets/img/slogan.svg"
         alt="368個鄉鎮市區 總有一個你的菜,這次想去哪裡鴨？"
       />
       <Menu />
       <figure>
-        <img id="duck" alt="black-duck" src="@/assets/black-duck.svg" />
-        <img alt="white-duck" src="@/assets/white-duck.svg" />
+        <img
+          class="blackDuck"
+          alt="black-duck"
+          src="@/assets/img/black-duck.svg"
+        />
+        <img class="whiteDuck" alt="white-duck" src="@/assets/img/哪裡鴨.svg" />
       </figure>
-    </div>
-
-    <p class="subtitle"><img src="@/assets/找個沒去過的.svg" /></p>
+    </section>
     <section class="district_intro">
+      <p class="subtitle"><img src="@/assets/img/找個沒去過的.svg" /></p>
       <div class="district_group">
         <div class="district_buttons">
           <button
@@ -49,13 +53,14 @@
 </template>
 
 <script>
-import citiesList from '@/assets/data/citiesList.json'
-import City from '../components/City.vue'
-import TaiwanMap from '../components/TaiwanMap.vue'
-import Menu from '../components/Menu.vue'
+import citiesList from "@/assets/data/citiesList.json";
+import City from "../components/City.vue";
+import TaiwanMap from "../components/TaiwanMap.vue";
+// import BlackDuck from "../components/BlackDuck.vue";
+import Menu from "../components/Menu.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     City,
     Menu,
@@ -64,76 +69,91 @@ export default {
   data() {
     return {
       showAll: false,
-      chosedCity: '請選擇縣市',
-      hoveredArea: '',
-      hoveredCity: '',
+      chosedCity: "請選擇縣市",
+      hoveredArea: "",
+      hoveredCity: "",
       displayedCities: [],
-      districts: ['北部', '中部', '南部', '東部', '離島'],
-    }
+      districts: ["北部", "中部", "南部", "東部", "離島"],
+    };
   },
   computed: {
     citiesList() {
-      return citiesList
+      return citiesList;
     },
     displayList() {
       return this.showAll
         ? this.citiesList
-        : this.citiesList.filter((city, index) => index < 4)
+        : this.citiesList.filter((city, index) => index < 4);
     },
   },
   methods: {
     toggleDistrict(event) {
       this.displayedCities = this.citiesList.filter(
-        (city) => city.district === event.target.dataset.name,
-      )
+        (city) => city.district === event.target.dataset.name
+      );
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-#duck {
-  animation: walking 1s linear infinite alternate;
+main {
+  overflow: hidden;
+  .main_bg {
+    position: fixed;
+    z-index: -1;
+    top: 70px;
+  }
+  .district_intro {
+    margin-top: 20vh;
+    position: relative;
+    z-index: -1;
+    height: calc(100vh - 70px);
+  }
 }
 
-@keyframes walking {
-  0% {
-    transform: rotate(3deg);
-  }
-  100% {
-    transform: rotate(-3deg);
-  }
+// fixed 背景
+.main_bg {
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(100vh - 70px);
+  background: url("../assets/img/Main-Banner-Mask.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-
 // banner
 .banner {
   box-sizing: border-box;
   width: 100%;
-  height: 500px;
+  height: calc(100vh - 70px);
   padding: 40px 0 40px 30px;
   margin-bottom: 100px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: start;
-
-  background: url('../assets/Main-Banner-Mask.png');
-  background-repeat: no-repeat;
-  background-size: cover;
+  position: relative;
+  z-index: 0;
 
   .slogan {
     align-self: center;
-    width: 30%;
-    @media (min-width: 768px) {
-      align-self: flex-start;
+    width: 40%;
+    z-index: 0;
+    align-self: flex-start;
+
+    @include breakpoint.mobile {
+      width: 60%;
+      align-self: center;
     }
   }
 
   figure {
-    align-self: flex-end;
-    transform: translateY(20%);
-    @media (min-width: 576px) {
-      transform: translateY(15%);
-    }
+    width: 100%;
+    text-align: end;
+    position: absolute;
+    z-index: -1;
+    bottom: 0;
   }
 }
 
@@ -218,12 +238,9 @@ export default {
     }
   }
 }
-main {
-  margin-bottom: 50px;
-}
-section {
-  padding: 0 20px;
-  margin-bottom: 40px;
+
+.district_intro {
+  padding: 20px;
   p {
     margin-left: 20px;
     text-align: start;
@@ -241,5 +258,83 @@ section {
 // hover effect
 .hoverCity {
   background-color: orange;
+}
+
+// menu
+
+::v-deep .menu {
+  width: 80%;
+  flex-direction: column;
+  margin-top: 40px;
+
+  .dropDown_menu {
+    height: 60px;
+    padding: 20px 30px;
+    border-radius: 24px;
+    background: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    .toggle_icon {
+      width: 16px;
+      pointer-events: none;
+    }
+  }
+  .dropDown_select {
+    border: 1px solid black;
+    border-radius: 24px;
+    width: 100%;
+    top: 110%;
+  }
+  .search_button {
+    font-size: 18px;
+    width: 80%;
+    height: 60px;
+    border-radius: 24px;
+    outline: none;
+    background: url(/img/放大鏡.e619c7da.svg) bottom 50% left 70% / 30px 40px
+        no-repeat,
+      #f79c31;
+    text-align: center;
+
+    &:hover {
+      box-shadow: -2px 4px 4px #6d6c6c;
+      transform: translate(1px, -1px);
+      transition: all 0.3s;
+    }
+  }
+}
+
+// 鴨子動畫
+.blackDuck {
+  animation: walking 5s linear infinite alternate;
+}
+.whiteDuck {
+  animation: walking 5s 0.1s linear infinite alternate;
+}
+
+@keyframes walking {
+  0% {
+    transform: translateX(-10px);
+  }
+  45% {
+    transform: translateX(-50px);
+  }
+  50% {
+    transform: scaleX(-1) translateX(50px);
+  }
+  100% {
+    transform: scaleX(-1) translateX(0px);
+  }
+}
+
+@keyframes return {
+  0% {
+    transform: scaleX(-1);
+  }
+  100% {
+    transform: scaleX(-1);
+  }
 }
 </style>
