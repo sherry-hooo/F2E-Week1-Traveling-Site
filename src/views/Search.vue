@@ -2,19 +2,26 @@
   <main>
     <section>
       <Menu :cityResult="cityName" />
-      <div class="search_result">
-        <h3>顯示搜尋結果： {{ cityName }}</h3>
+      <div class="search_title">
+        <h3>{{ cityName }}</h3>
       </div>
-      <div v-if="citySitesList" class="cards_area">
-        <CitySite
-          v-for="citySite of citySitesList"
-          :key="citySite.id"
-          :citySite="citySite"
-          :cityLink="$route.params.cityLink"
-        ></CitySite>
+      <div class="search_filters">
+        <!-- <i class="fas fa-map-marker-alt fa-fw"></i> -->
+        <router-link
+          :to="{ path: `/search/${cityLink}/ScenicSpot`, name: ScenicSpot }"
+          ><i class="fas fa-mountain fa-fw"></i
+        ></router-link>
+        <router-link :to="{ path: `/search/${cityLink}/Restaurant` }"
+          ><i class="fas fa-utensils fa-fw"></i
+        ></router-link>
+        <router-link :to="{ path: `/search/${cityLink}/Hotel`, name: Hotel }">
+          <i class="fas fa-bed fa-fw"></i
+        ></router-link>
+      </div>
+      <div class="search_content">
+        <router-view />
       </div>
     </section>
-
     <button v-if="!lastPage" @click="changePage" class="more_button">
       看更多
     </button>
@@ -22,59 +29,59 @@
 </template>
 
 <script>
-import citiesList from '@/assets/data/citiesList.json'
-import CitySite from '@/components/CitySite.vue'
-import getCitysiteInfo from '@/services/getCitysiteInfo.js'
-import Menu from '@/components/Menu.vue'
+import citiesList from "@/assets/data/citiesList.json";
+import getApi from "@/services/getApi.js";
+import Menu from "@/components/Menu.vue";
 
 export default {
   components: {
-    CitySite,
     Menu,
   },
-  props: ['cityLink', 'cityName', 'page'],
+  props: ["cityLink", "cityName"],
   data() {
     return {
       displayQty: 30,
       skip: 0,
       citySitesList: null,
-    }
+    };
   },
   computed: {
     citiesList() {
-      return citiesList
+      return citiesList;
     },
     lastPage() {
-      return this.citySitesList.length < 30
+      // return this.citySitesList.length < 30;
+      // 待改
+      return true;
     },
   },
   methods: {
     changePage() {
-      this.skip += 30
-      getCitysiteInfo
+      this.skip += 30;
+      getApi
         .getCity(this.$route.params.cityLink, this.displayQty, this.skip)
         .then((res) => {
-          return (this.citySitesList = res.data)
+          return (this.citySitesList = res.data);
         })
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err));
     },
   },
   watch: {
     cityName() {
-      console.log('watch')
-      getCitysiteInfo
+      console.log("watch");
+      getApi
         .getCity(this.$route.params.cityLink, this.displayQty, this.skip)
         .then((res) => (this.citySitesList = res.data))
-        .catch((err) => console.log(err))
+        .catch((err) => console.log(err));
     },
   },
   created() {
-    getCitysiteInfo
+    getApi
       .getCity(this.$route.params.cityLink, this.displayQty, this.skip)
       .then((res) => (this.citySitesList = res.data))
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err));
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -87,10 +94,15 @@ section {
   padding: 20px 20px;
   background: #f7f7f7;
 
-  .search_result {
-    margin-bottom: 40px;
+  .search_title {
+    padding: 25px;
+    margin-bottom: 10px;
+    h3 {
+      font-size: 40px;
+    }
   }
-  .cards_area {
+  .search_content {
+    padding: 20px;
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 20px;
@@ -142,6 +154,26 @@ section {
     background: #aeaeae;
     color: white;
     transition: all 0.5s;
+  }
+}
+
+.search_filters {
+  padding: 20px 0;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  a {
+    border: 3px solid black;
+    border-radius: 50%;
+    padding: 20px;
+    color: black;
+    &.router-link-exact-active {
+      background: orange;
+    }
+    i {
+      font-size: 30px;
+    }
   }
 }
 </style>
