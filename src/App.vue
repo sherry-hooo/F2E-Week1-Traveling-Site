@@ -1,6 +1,6 @@
 <template>
   <header id="nav">
-    <router-link to="/" v-if="!displayLogo">
+    <router-link to="/" v-if="displayLogo">
       <h1 id="logo">
         <img src="./assets/img/logo.svg" alt="要去哪裡鴨logo" />
       </h1>
@@ -29,12 +29,14 @@ export default {
   },
   data() {
     return {
-      displayLogo: false,
+      displayLogo: true,
     };
   },
   methods: {
-    openMenu(menuStatus) {
-      this.displayLogo = menuStatus;
+    openMenu(menuIsOpen) {
+      console.log(menuIsOpen);
+      this.displayLogo = !menuIsOpen;
+      console.log(this.displayLogo);
     },
   },
 };
@@ -88,7 +90,6 @@ export default {
       }
     }
   }
-
 
   @include breakpoint.mobile {
     height: 70px;
