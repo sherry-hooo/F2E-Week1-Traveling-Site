@@ -4,11 +4,6 @@ import jsSHA from "jssha";
 const apiClient = axios.create({
   baseURL: "https://ptx.transportdata.tw/MOTC/v2/Tourism/",
   withCredentials: false,
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    ...getAuthorizationHeader(),
-  },
 });
 
 // 請求攔截器
@@ -22,51 +17,60 @@ apiClient.interceptors.request.use((config) => {
 });
 
 export default {
-  getCity(city, total, skip = 0) {
-    return apiClient.get(
-      "/ScenicSpot/" +
-        city +
-        "?$top=" +
-        total +
-        "&$skip=" +
-        skip +
-        "&$format=JSON"
-    );
+  getCityScenicSpot(city) {
+    return apiClient.get(`/ScenicSpot/${city}`, {
+      params: {
+        $format: "JSON",
+      },
+    });
   },
-  getSite(city, id) {
-    return apiClient.get(
-      "/ScenicSpot/" +
-        city +
-        "?$filter=ID%20eq%20" +
-        `'${id}'` +
-        "&$format=JSON"
-    );
+  getCityRestaurant(city) {
+    return apiClient.get(`/Restaurant/${city}`, {
+      params: {
+        $format: "JSON",
+      },
+    });
+  },
+  getCityHotel(city) {
+    return apiClient.get(`/Hotel/${city}`, {
+      params: {
+        $format: "JSON",
+      },
+    });
+  },
+  getCityActivity(city, month) {
+    return apiClient.get(`/Activity/${city}`, {
+      params: {
+        $filter: `month(StartTime) eq ${month} or month(EndTime) eq ${
+          month - 1
+        }`,
+        $format: "JSON",
+      },
+    });
+  },
+  getScenicSpot(city, id) {
+    return apiClient.get(`/ScenicSpot/${city}`, {
+      params: {
+        $filter: `ID eq '${id}'`,
+        $format: "JSON",
+      },
+    });
   },
   getRestaurant(city, id) {
-    return apiClient.get(
-      "/Restaurant/" +
-        city +
-        "?$filter=ID%20eq%20" +
-        `'${id}'` +
-        "&$format=JSON"
-    );
+    return apiClient.get(`/Restaurant/${city}`, {
+      params: {
+        $filter: `ID eq '${id}'`,
+        $format: "JSON",
+      },
+    });
   },
   getHotel(city, id) {
-    // console.log(city,id)
-    // console.log(
-    //   apiClient.get(
-    //     '/Hotel/' + city + '?$filter=ID%20eq%20' + `'${id}'` + '&$format=JSON',
-    //   ),
-    // )
-    // return apiClient.get(`/Hotel/${city}`, {
-    //   params: {
-    //     $filter: `ID eq '${id}'`,
-    //     $format: 'JSON'
-    //   }
-    // })
-    return apiClient.get(
-      "/Hotel/" + city + "?$filter=ID%20eq%20" + `'${id}'` + "&$format=JSON"
-    );
+    return apiClient.get(`/Hotel/${city}`, {
+      params: {
+        $filter: `ID eq '${id}'`,
+        $format: "JSON",
+      },
+    });
   },
   getNearSites(lat, lon, distance) {
     return apiClient.get(
