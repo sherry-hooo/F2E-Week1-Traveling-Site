@@ -1,0 +1,101 @@
+@use "../abstract/breakpoint";
+
+
+
+.myCard {
+  display: flex;
+  min-width: 200px;
+  min-height: fit-content;
+  height: 100%;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #aeaeae;
+  color: black;
+
+  &_thumbnail {
+    width: 150px;
+    height: 150px;
+    flex: 0 0 auto;
+    margin-right: 20px;
+    overflow: hidden;
+    border-radius: 20px; //delete
+
+    img {
+      width: 100%;
+      height: 100%;
+      vertical-align: bottom;
+      border-radius: 8px;
+      object-fit: cover;
+      object-position: center center;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
+  }
+  &_body {
+    text-align: start;
+    overflow: hidden;
+    h4 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    p {
+      display: flex;
+      align-items: flex-start;
+      & + p {
+        margin-top: 5px;
+      }
+      img {
+        margin: 2px 5% 0 0;
+      }
+      span {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+@include breakpoint.mobile {
+  .myCard {
+    display: flex;
+    border-radius: 20px;
+    flex-direction: column;
+    position: relative;
+    z-index: 0;
+    padding: 0;
+    &_thumbnail {
+      // order: 1;
+      width: 100%;
+      height: 150px;
+      margin-right: 0;
+      flex: 0 0 auto;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+    &_body {
+      width: 100%;
+      height: 30%;
+      padding: 20px;
+      border-radius: 20px 20px 0 0;
+      background: white;
+      position: absolute;
+      z-index: 0;
+      top: 0;
+      display: flex;
+      align-items: center;
+justify-content: center;
+      h4 {
+        margin: 0px;
+        text-align: center;
+      }
+      p {
+        display: none;
+      }
+    }
+  }
+}
