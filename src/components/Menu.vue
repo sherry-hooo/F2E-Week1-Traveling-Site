@@ -9,7 +9,7 @@
         alt="toggle icon"
       />
     </div>
-    <div v-if="openMenu" class="dropDown_select">
+    <div v-if="openMenu" class="dropDown_select dropDown_animation">
       <label
         v-for="city of citiesList"
         :key="city.id"
@@ -138,6 +138,7 @@ export default {
   }
 }
 
+// 下拉式選單
 .dropDown_select {
   background: white;
   width: 100%;
@@ -183,7 +184,26 @@ export default {
   }
 }
 
+// hover dropDown select 時填色
 .filledColor {
   background-color: #93b6c8;
+}
+
+// dropDown Animation
+.dropDown_animation {
+  animation: growDown 500ms ease-in-out forwards;
+  transform-origin: top;
+}
+
+@keyframes growDown {
+  0% {
+    transform: scaleY(0);
+  }
+  80% {
+    transform: scaleY(1.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
 }
 </style>
