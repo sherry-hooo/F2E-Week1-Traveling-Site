@@ -1,6 +1,6 @@
 <template>
-  <div class="menu" @click="toggleMenu">
-    <div class="dropDown_menu">
+  <div class="menu">
+    <div class="dropDown_menu" @click="toggleMenu">
       {{ chosedCity }}
       <img
         :style="rotate"
@@ -68,6 +68,7 @@ export default {
     },
     chooseCity(event) {
       this.chosedCity = event.target.value;
+      this.toggleMenu()
     },
     goSearch(cityLink) {
       if (this.chosedCityLink === "請選擇縣市") {
@@ -111,6 +112,7 @@ export default {
       pointer-events: none;
     }
     @include breakpoint.mobile {
+      font-size: 20px;
       height: 100%;
       width: 200px;
     }
@@ -133,6 +135,7 @@ export default {
       transition: all 0.3s;
     }
     @include breakpoint.mobile {
+      font-size: 20px;
       height: 100%;
     }
   }
@@ -154,12 +157,13 @@ export default {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   row-gap: 10px;
+  column-gap: 2px;
   justify-items: center;
   @media (min-width: 576px) {
     grid-template-columns: repeat(3, 1fr);
   }
   @media (min-width: 768px) {
-    padding: 20px 40px;
+    padding: 20px;
     grid-template-columns: repeat(4, 1fr);
   }
   .radio {
@@ -168,18 +172,15 @@ export default {
   label {
     flex: 1 1 auto;
     border-radius: 20px;
-    width: fit-content;
-    padding: 10px;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
     &:hover {
       background: #93b6c8;
       border: #93b6c8;
     }
     @media (min-width: 576px) {
       font-size: 18px;
-      padding: 15px 30px;
-    }
-    @media (min-width: 768px) {
-      // border: 1px solid #aeaeae;
     }
   }
 }
