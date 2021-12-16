@@ -4,6 +4,7 @@ import Search from "../views/Search.vue";
 import citiesList from "@/assets/data/citiesList.json";
 import ScenicSpot from "@/views/search/ScenicSpot.vue";
 import Restaurant from "@/views/search/Restaurant.vue";
+import Activity from "@/views/search/Activity.vue";
 import Hotel from "@/views/search/Hotel.vue";
 
 const routes = [
@@ -28,7 +29,7 @@ const routes = [
         (city) => city.cityLink === route.params.cityLink
       ).cityName,
     }),
-    // redirect: { name: "ScenicSpot" },
+    redirect: { name: "ScenicSpot" },
     children: [
       {
         path: "ScenicSpot",
@@ -45,10 +46,15 @@ const routes = [
         name: "Hotel",
         component: Hotel,
       },
+      {
+        path: "Activity",
+        name: "Activity",
+        component: Activity,
+      },
     ],
   },
   {
-    path: "/search/:cityLink/:name/:id",
+    path: "/search/:category/:cityLink/:name/:id",
     name: "description",
     props: true,
     // component: description,
