@@ -4,20 +4,35 @@
       <div class="search_title">
         <h3>{{ cityName }}</h3>
       </div>
+
+      <div class="cityMap">
+        <Map></Map>
+      </div>
     </aside>
-    <section>
+    <section class="search">
       <div class="search_filters">
-        <!-- <i class="fas fa-map-marker-alt fa-fw"></i> -->
+        <router-link :to="{ name: 'ScenicSpot', params: { cityLink } }"
+          ><i class="fas fa-mountain fa-fw"></i>
+        </router-link>
+        <router-link :to="{ name: 'Restaurant', params: { cityLink } }"
+          ><i class="fas fa-utensils fa-fw"></i>
+        </router-link>
         <router-link
-          :to="{ path: `/search/${cityLink}/ScenicSpot`, name: ScenicSpot }"
-          ><i class="fas fa-mountain fa-fw"></i
-        ></router-link>
-        <router-link :to="{ path: `/search/${cityLink}/Restaurant` }"
-          ><i class="fas fa-utensils fa-fw"></i
-        ></router-link>
-        <router-link :to="{ path: `/search/${cityLink}/Hotel`, name: Hotel }">
-          <i class="fas fa-bed fa-fw"></i
-        ></router-link>
+          :to="{
+            name: 'Hotel',
+            params: { cityLink },
+          }"
+        >
+          <i class="fas fa-bed fa-fw"></i>
+        </router-link>
+        <router-link
+          :to="{
+            name: 'Activity',
+            params: { cityLink },
+          }"
+        >
+          <i class="fas fa-calendar-alt fa-fw"></i>
+        </router-link>
       </div>
       <div class="search_content">
         <router-view />
@@ -31,13 +46,15 @@
 
 <script>
 import citiesList from "@/assets/data/citiesList.json";
-import getApi from "@/services/getApi.js";
+import Map from "@/components/Map.vue";
 
 export default {
-  components: {},
+  components: { Map },
   props: ["cityLink", "cityName"],
   data() {
-    return {};
+    return {
+      activityList: [],
+    };
   },
   computed: {
     citiesList() {
@@ -52,54 +69,61 @@ export default {
   methods: {
     changePage() {
       this.skip += 30;
-      getApi
-        .getCity(this.$route.params.cityLink, this.displayQty, this.skip)
-        .then((res) => {
-          return (this.citySitesList = res.data);
-        })
-        .catch((err) => console.log(err));
     },
   },
-  watch: {},
+  created() {},
 };
 </script>
 
 <style lang="scss" scoped>
 main {
-  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   @include breakpoint.desktop {
-    height: 100vh;
+    height: calc(100vh - 70px);
     flex-direction: row;
+    flex-wrap: wrap;
     aside {
-      flex: 1 1 40%;
-      width: 40%;
-    }
-    section {
-      flex: 1 1 60%;
-      width: 60%;
+      flex: 1 1 50%;
+      width: 50%;
+      height: 100%;
       overflow: scroll;
-      z-index: -1;
+    }
+    .search {
+      flex: 1 1 50%;
+      width: 50%;
+      height: 100%;
+      overflow: scroll;
+    }
+    .citySlider {
     }
   }
 }
 
 aside {
-  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   .search_title {
     padding: 25px;
     margin-bottom: 10px;
-    h3 {
+    h3,
+    h4 {
       font-size: 40px;
     }
   }
+
+  .cityMap {
+    width: 100%;
+    height: 70%;
+    margin-top: auto;
+  }
 }
-section {
+.search {
+  box-sizing: border-box;
+  background: #f7f7f7;
   display: flex;
   flex-direction: column;
-  padding: 10px;
-  background: #f7f7f7;
   .search_filters {
     padding: 20px 0;
     margin-bottom: 10px;
@@ -111,8 +135,11 @@ section {
       border-radius: 50%;
       padding: 20px;
       color: black;
+      cursor: pointer;
+      transition: all 0.3s linear;
       &.router-link-exact-active {
         background: orange;
+        transition: all 0.3s linear;
       }
       i {
         font-size: 30px;
@@ -127,14 +154,16 @@ section {
 
     @include breakpoint.mobile {
       grid-template-columns: repeat(2, 1fr);
-      column-gap: 30px;
+      row-gap: 30px;
     }
     @include breakpoint.tablet {
       grid-template-columns: repeat(3, 1fr);
-      column-gap: 20px;
     }
     @include breakpoint.desktop {
       grid-template-columns: repeat(2, 1fr);
+    }
+    @include breakpoint.bgScreen {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 }
