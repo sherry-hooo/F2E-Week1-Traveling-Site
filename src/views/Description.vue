@@ -33,12 +33,6 @@
             {{ siteInfo.Remark }}
           </p>
         </li>
-        <li class="info_des_group_content" v-if="siteInfo.TravelInfo">
-          <img src="@/assets/img/edit.svg" alt="編輯圖示" />
-          <p>
-            {{ siteInfo.TravelInfo }}
-          </p>
-        </li>
         <li class="info_des_group_content" v-if="siteInfo.ServiceInfo">
           <img src="@/assets/img/edit.svg" alt="編輯圖示" />
           <p>
@@ -51,12 +45,18 @@
             {{ siteInfo.Spec }}
           </p>
         </li>
+        <li class="info_des_group_content" v-if="siteInfo.ParkingInfo">
+          <img src="@/assets/img/edit.svg" alt="編輯圖示" />
+          <p>
+            {{ siteInfo.ParkingInfo }}
+          </p>
+        </li>
       </ul>
     </section>
     <section class="route_info">
       <iframe :src="googleMap" frameborder="0" allowfullscreen></iframe>
       <div>
-        <p>交通資訊</p>
+        <p class="title">交通資訊</p>
         <p v-if="siteInfo.TravelInfo">
           {{ siteInfo.TravelInfo }}
         </p>
@@ -252,9 +252,11 @@ main {
     }
     &_content {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       margin-bottom: 10px;
       img {
+        width: 20px;
+        padding-top: 2px;
         margin-right: 10px;
         + * {
           color: black;
@@ -295,6 +297,17 @@ main {
   div {
     width: 100%;
     height: 100%;
+    padding: 0 30px;
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    .title {
+      font-size: 30px;
+      font-weight: 900;
+      text-align: center;
+    }
   }
   @include breakpoint.tablet {
     flex-direction: row;
