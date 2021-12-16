@@ -16,7 +16,7 @@
         alt="restaurant.Picture.PictureDescription1"
         :src="restaurant.Picture.PictureUrl1"
       />
-      <img v-else src="@/assets/replacedImg.png" alt="" />
+      <img v-else src="@/assets/img/replacedImg.png" alt="" />
       <p>{{ restaurant.Name }}</p>
     </div>
   </router-link>
@@ -29,7 +29,7 @@ export default {
   props: ['restaurant'],
   data() {
     return {
-      itemImg: require(`@/assets/replacedImg.png`),
+      itemImg: require(`@/assets/img/replacedImg.png`),
     }
   },
   computed: {

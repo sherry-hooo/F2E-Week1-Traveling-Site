@@ -2,7 +2,7 @@
   <router-link
     class="city"
     :to="{
-      name: 'search',
+      name: 'Search',
       params: { cityLink: city.cityLink },
     }"
   >
@@ -14,14 +14,12 @@
 
 <script>
 export default {
-  name: 'city',
-  props: ['city'],
+  name: "city",
+  props: ["city"],
   data() {
-    return {
-      events: null,
-    }
+    return {};
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

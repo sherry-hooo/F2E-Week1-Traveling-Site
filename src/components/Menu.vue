@@ -91,7 +91,6 @@ export default {
   gap: 20px;
 
   @include breakpoint.mobile {
-    height: 100%;
     justify-content: flex-end;
   }
   .dropDown_menu {

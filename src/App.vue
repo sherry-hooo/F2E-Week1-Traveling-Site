@@ -23,6 +23,7 @@
 <script>
 import Menu from "@/components/Menu.vue";
 
+
 export default {
   components: {
     Menu,
@@ -34,9 +35,7 @@ export default {
   },
   methods: {
     openMenu(menuIsOpen) {
-      console.log(menuIsOpen);
       this.displayLogo = !menuIsOpen;
-      console.log(this.displayLogo);
     },
   },
 };

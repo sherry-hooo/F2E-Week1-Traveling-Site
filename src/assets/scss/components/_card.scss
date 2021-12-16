@@ -59,10 +59,11 @@
 
 @include breakpoint.mobile {
   .myCard {
-    width: 250px;
+    max-width: 250px;
     height: 250px;
     padding: 0;
     border-radius: 20px;
+    margin: 0 auto;
     position: relative;
     z-index: 0;
     display: flex;
@@ -110,9 +111,8 @@
         &:hover::after {
           content: "\2192 ";
           display: inline-block;
-          width: 10px;
-          margin-left: 10px;
-          animation: pointing 0.8s infinite linear alternate;
+          margin-left: 5px;
+          animation: pointing 0.4s infinite linear alternate;
         }
       }
       p {
@@ -124,7 +124,7 @@
 
 @keyframes pointing {
   0% {
-    transform: translateX(5px);
+    transform: translateX(3px);
   }
   100% {
     transform: translateX(0px);
