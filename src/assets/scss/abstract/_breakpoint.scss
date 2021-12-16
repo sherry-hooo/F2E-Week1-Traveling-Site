@@ -2,6 +2,7 @@
 $media-mobile: 576px;
 $media-tablet: 768px;
 $media-desktop: 1024px;
+$media-bgScreen: 1440px;
 
 @mixin mobile {
   @media (min-width: $media-mobile) {
@@ -17,6 +18,12 @@ $media-desktop: 1024px;
 
 @mixin desktop {
   @media (min-width: $media-desktop) {
+    @content;
+  }
+}
+
+@mixin bgScreen {
+  @media (min-width: $media-bgScreen) {
     @content;
   }
 }
