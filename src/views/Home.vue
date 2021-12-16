@@ -1,7 +1,8 @@
 <template>
   <main class="home">
     <div class="main_bg"></div>
-    <section class="banner">
+    <!-- 大banner -->
+    <section class="banner_area">
       <img
         class="slogan"
         src="@/assets/img/slogan.svg"
@@ -17,21 +18,24 @@
         <img class="whiteDuck" alt="white-duck" src="@/assets/img/哪裡鴨.svg" />
       </figure>
     </section>
-    <section class="district_intro">
-      <p class="subtitle"><img src="@/assets/img/找個沒去過的.svg" /></p>
-      <div class="district_group">
-        <div class="district_buttons">
+    <!-- 台灣地圖區 -->
+    <section class="map_area">
+      <div class="map_area_description">
+        <p class="title">
+          <img src="@/assets/img/找個沒去過的.svg" />
+        </p>
+        <div class="cityLink_buttons">
           <button
             v-for="district of districts"
             :key="district.id"
             class="district"
             :data-name="district"
-            @click="toggleDistrict"
+            @mouseenter="hoverDistrict(district)"
           >
             {{ district }}
           </button>
         </div>
-
+        <!-- city列表 -->
         <ul class="cities_group">
           <City
             v-for="city of displayedCities"
@@ -39,15 +43,16 @@
             :city="city"
             data-city="city.id"
             :class="{ hoverCity: city.id === hoveredArea }"
-            @mouseover="hoveredCity = city.id"
           ></City>
         </ul>
-        <div class="recent_events"></div>
       </div>
-
-      <div class="Taiwan">
-        <TaiwanMap :hoveredCity="hoveredCity" />
-      </div>
+      <!-- 台灣地圖 -->
+      <figure class="Taiwan">
+        <TaiwanMap
+          :hoveredDistrict="hoveredDistrict"
+          @hoveredArea="receiveHoveredArea"
+        />
+      </figure>
     </section>
   </main>
 </template>
@@ -62,17 +67,16 @@ import Menu from "../components/Menu.vue";
 export default {
   name: "Home",
   components: {
-    City,
     Menu,
     TaiwanMap,
+    City,
   },
   data() {
     return {
       showAll: false,
       chosedCity: "請選擇縣市",
       hoveredArea: "",
-      hoveredCity: "",
-      displayedCities: [],
+      hoveredDistrict: "",
       districts: ["北部", "中部", "南部", "東部", "離島"],
     };
   },
@@ -80,34 +84,48 @@ export default {
     citiesList() {
       return citiesList;
     },
-    displayList() {
-      return this.showAll
-        ? this.citiesList
-        : this.citiesList.filter((city, index) => index < 4);
+    displayedCities() {
+      return citiesList.filter(
+        (city) => city.district === this.hoveredDistrict
+      );
     },
   },
   methods: {
-    toggleDistrict(event) {
-      this.displayedCities = this.citiesList.filter(
-        (city) => city.district === event.target.dataset.name
-      );
+    hoverDistrict(districtName) {
+      this.hoveredDistrict = districtName;
     },
+    receiveHoveredArea(cityName) {
+      this.hoveredArea = cityName;
+    },
+    reportWindowSize(event) {
+      console.log(event.target.innerWidth);
+    },
+  },
+  mounted() {
+    window.addEventListener("resize", this.reportWindowSize);
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.reportWindowSize);
   },
 };
 </script>
 
 <style lang="scss" scoped>
+// main layout
 main {
   overflow: hidden;
+  padding-bottom: 50vh;
   .main_bg {
     position: fixed;
     z-index: -1;
     top: 70px;
   }
-  .district_intro {
-    margin-top: 20vh;
-    position: relative;
-    z-index: -1;
+  .banner_area {
+    box-sizing: content-box;
+    height: calc(100vh - 70px);
+  }
+  .map_area {
+    box-sizing: content-box;
     height: calc(100vh - 70px);
   }
 }
@@ -122,12 +140,10 @@ main {
   background-size: cover;
 }
 // banner
-.banner {
+.banner_area {
   box-sizing: border-box;
   width: 100%;
-  height: calc(100vh - 70px);
-  padding: 40px 0 40px 30px;
-  margin-bottom: 100px;
+  padding: 40px 0 240px 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -157,101 +173,111 @@ main {
   }
 }
 
-.subtitle {
-  margin: 0 auto 20px;
-  width: 50%;
-  @media (min-width: 576px) {
-    width: 200px;
-  }
-  @media (min-width: 768px) {
-    margin-left: 40px;
-  }
-  img {
-    width: 100%;
-    height: 100%;
-  }
-}
-.district_intro {
-  display: flex;
-  flex-direction: column;
+// 台灣地圖區
+.map_area {
   color: black;
   font-size: 12px;
-  @media (min-width: 768px) {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-evenly;
-  }
+  padding: 70px 20px 40px;
 
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include breakpoint.tablet {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    padding: 70px 20px 0;
+  }
   .Taiwan {
-    // width: 40%;
-    flex: 0 0 40%;
-    // height: 500px;
-    > * {
+    width: 100%;
+    height: calc(80vh - 70px);
+    transform: translateX(-50px);
+    > svg {
       width: 100%;
       height: 100%;
     }
+    @include breakpoint.desktop {
+      flex: 1 1 60%;
+      width: 60%;
+      transform: none;
+    }
   }
-  .district_group {
+  &_description {
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    flex: 1 1 45%;
-
-    .district_buttons {
-      flex: 0 1 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    @include breakpoint.tablet {
+      flex: 1 1 40%;
+      width: 40%;
+    }
+    .title {
+      box-sizing: content-box;
+      width: 50%;
+      margin-bottom: 30px;
       display: flex;
-      gap: 10px;
+      align-items: center;
+      img {
+        width: 100%;
+      }
+      @include breakpoint.desktop {
+        width: 50%;
+      }
+    }
+    .cityLink_buttons {
+      width: 100%;
+      margin-bottom: 50px;
+      display: flex;
+      flex-wrap: wrap;
       justify-content: center;
 
       .district {
-        flex: 0 1 100px;
-        min-height: 60px;
-        min-width: 60px;
+        aspect-ratio: 1;
+        width: 50px;
+        height: 50px;
         border: 3px solid #3b6c85;
-        border-radius: 50px;
+        border-radius: 50%;
+        margin: 5px;
         background: #3b6c85;
         color: white;
         font-weight: 700;
-        font-size: 14px;
+        font-size: 16px;
         transition: all 0.5s;
-
-        @media (min-width: 576px) {
-          font-size: 16px;
-        }
-        @media (min-width: 768px) {
-          font-size: 20px;
-        }
-
         &:hover {
           background: none;
           color: #3b6c85;
           transition: all 0.5s;
         }
+        @include breakpoint.mobile {
+          font-size: 20px;
+          width: 80px;
+          height: 80px;
+        }
+        @include breakpoint.tablet {
+          font-size: 20px;
+          width: 80px;
+          height: 80px;
+        }
       }
-    }
-    .cities_group {
-      flex: 0 1 100%;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
     }
   }
 }
 
-.district_intro {
-  padding: 20px;
-  p {
-    margin-left: 20px;
-    text-align: start;
+// cities 縣市列表
+.cities_group {
+  padding: 0 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  @include breakpoint.tablet {
+    flex-direction: column;
+    width: 100%;
   }
-  .thumbnail_group {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 20px 0;
-    a {
-      margin: 20px;
-    }
+  a {
+    width: fit-content;
+    margin: 10px;
   }
 }
 
@@ -261,18 +287,18 @@ main {
 }
 
 // menu
-
 ::v-deep .menu {
   width: 80%;
   flex-direction: column;
   margin-top: 40px;
+  justify-content: flex-start;
 
   .dropDown_menu {
+    width: 80%;
     height: 60px;
     padding: 20px 30px;
     border-radius: 24px;
     background: #ffffff;
-    font-size: 18px;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -284,11 +310,15 @@ main {
   .dropDown_select {
     border: 1px solid black;
     border-radius: 24px;
-    width: 100%;
-    top: 110%;
+    width: 80%;
+    top: 80px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    height: fit-content;
   }
   .search_button {
-    font-size: 18px;
     width: 80%;
     height: 60px;
     border-radius: 24px;
