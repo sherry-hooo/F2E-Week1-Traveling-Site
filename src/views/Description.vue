@@ -1,282 +1,313 @@
 <template>
-  <main>
-    <div class="site_info">
-      <figure class="site_info_img">
-        <button class="changePage_button" @click="this.$router.go(-1)">
-          <img src="@/assets/arrow.svg" alt="" />
-        </button>
-        <img
-          v-if="siteInfo.Picture && siteInfo.Picture.PictureUrl1"
-          :src="siteInfo.Picture.PictureUrl1"
-          :alt="siteInfo.Picture.PictureUrl1PictureDescription1"
-        />
-        <img v-else src="@/assets/citiesImg/replacedImg2.jpg" alt="替代照片" />
-      </figure>
-
-      <ul class="site_info_des">
-        <h4 class="title">{{ siteInfo.Name }}</h4>
-        <li class="address">
-          <img src="@/assets/location.svg" alt="地址圖示" />
-          <span v-if="siteInfo.Address">{{ siteInfo.Address }}</span>
-          <span v-else>待更新</span>
+  <main class="description" v-if="siteInfo">
+    <section class="detail_des">
+      <article class="site_info_detail">
+        <h3>{{ siteInfo.Name }}</h3>
+        <p v-if="siteInfo.DescriptionDetail || siteInfo.Description">
+          {{ siteInfo.DescriptionDetail || siteInfo.Description }}
+        </p>
+      </article>
+    </section>
+    <section class="info_des">
+      <ul class="info_des_group">
+        <h4 class="info_des_group_title">{{ siteInfo.Name }}</h4>
+        <li class="info_des_group_content" v-if="siteInfo.Address">
+          <img src="@/assets/img/location.svg" alt="地址圖示" />
+          <p>{{ siteInfo.Address }}</p>
         </li>
-        <li class="tel">
-          <img src="@/assets/phone.svg" alt="電話圖示" />
-          <a v-if="siteInfo.Phone" href="tel:">{{ siteInfo.Phone }}</a>
-          <a v-else href="tel:">待更新</a>
+        <li class="info_des_group_content" v-if="siteInfo.Phone">
+          <img src="@/assets/img/phone.svg" alt="電話圖示" />
+          <a href="tel:">{{ siteInfo.Phone }}</a>
         </li>
-        <li class="time">
-          <img src="@/assets/time.svg" alt="時間圖示" />
-          <span v-if="siteInfo.OpenTime">{{ siteInfo.OpenTime }}</span>
-          <span v-else>待更新</span>
+        <li class="info_des_group_content" v-if="siteInfo.OpenTime">
+          <img src="@/assets/img/time.svg" alt="時間圖示" />
+          <p>{{ siteInfo.OpenTime }}</p>
         </li>
-        <li class="price">
-          <img src="@/assets/money.svg" alt="收費圖示" />
-          <span v-if="siteInfo.TicketInfo">{{ siteInfo.TicketInfo }}</span>
-          <span v-else>不收費</span>
+        <li class="info_des_group_content" v-if="siteInfo.TicketInfo">
+          <img src="@/assets/img/money.svg" alt="收費圖示" />
+          <p>{{ siteInfo.TicketInfo }}</p>
         </li>
-        <li class="remark">
-          <img src="@/assets/edit.svg" alt="編輯圖示" />
-          <span v-if="siteInfo.Remark">
+        <li class="info_des_group_content" v-if="siteInfo.Remark">
+          <img src="@/assets/img/edit.svg" alt="編輯圖示" />
+          <p>
             {{ siteInfo.Remark }}
-          </span>
-          <span v-else>待更新</span>
+          </p>
+        </li>
+        <li class="info_des_group_content" v-if="siteInfo.TravelInfo">
+          <img src="@/assets/img/edit.svg" alt="編輯圖示" />
+          <p>
+            {{ siteInfo.TravelInfo }}
+          </p>
+        </li>
+        <li class="info_des_group_content" v-if="siteInfo.ServiceInfo">
+          <img src="@/assets/img/edit.svg" alt="編輯圖示" />
+          <p>
+            {{ siteInfo.ServiceInfo }}
+          </p>
+        </li>
+        <li class="info_des_group_content" v-if="siteInfo.Spec">
+          <img src="@/assets/img/edit.svg" alt="編輯圖示" />
+          <p>
+            {{ siteInfo.Spec }}
+          </p>
         </li>
       </ul>
-      <article class="site_info_detail">
-        {{ siteInfo.DescriptionDetail }}
-      </article>
-
-      <iframe
-        :src="googleMap"
-        frameborder="0"
-        width="100%"
-        height="300px"
-        allowfullscreen
-      ></iframe>
-    </div>
-
-    <section>
-      <div v-if="nearByRestaurants" class="nearBy_area">
-        <p v-if="nearByRestaurants" class="title">附近餐廳</p>
-        <div class="thumbnail_area">
-          <Thumbnail
-            v-for="restaurant of nearByRestaurants"
-            :key="restaurant.id"
-            :restaurant="restaurant"
-            :nearByRestaurants="nearByRestaurants"
-          ></Thumbnail>
-        </div>
+    </section>
+    <section class="route_info">
+      <iframe :src="googleMap" frameborder="0" allowfullscreen></iframe>
+      <div>
+        <p>交通資訊</p>
+        <p v-if="siteInfo.TravelInfo">
+          {{ siteInfo.TravelInfo }}
+        </p>
       </div>
-
-      <div v-if="nearByHotels" class="nearBy_area">
-        <p v-if="nearByHotels" class="title">附近住宿</p>
-        <div class="thumbnail_area">
-          <Thumbnail
-            v-for="restaurant of nearByHotels"
-            :key="restaurant.id"
-            :restaurant="restaurant"
-            :nearByRestaurants="nearByHotels"
-          ></Thumbnail>
-        </div>
-      </div>
-      <p v-if="nearBySites" class="title">附近景點</p>
-      <div class="thumbnail_area">
-        <Thumbnail
-          v-for="restaurant of nearBySites"
-          :key="restaurant.id"
-          :restaurant="restaurant"
-          :nearByRestaurants="nearBySitess"
-        ></Thumbnail>
-      </div>
-
-      <img id="duck" src="@/assets/哪裡鴨.svg" alt="" />
     </section>
   </main>
 </template>
 
 <script>
-import Thumbnail from '@/components/Thumbnail.vue'
-import getCitysiteInfo from '@/services/getCitysiteInfo.js'
+// import Thumbnail from "@/components/Thumbnail.vue";
+import getApi from "@/services/getApi.js";
 
 export default {
-  components: {
-    Thumbnail,
-  },
-  props: ['name', 'id', 'city', 'cityLink'],
+  components: {},
+  props: ["name", "id", "cityLink", "category"],
   data() {
     return {
-      siteInfo: {},
+      siteInfo: { Picture: null },
       distance: 5000,
       nearByRestaurants: [],
       nearByHotels: [],
       nearBySites: null,
-      googleMap: '',
-    }
+      googleMap: "",
+    };
+  },
+  computed: {
+    picture1() {
+      return this.siteInfo.Picture && this.siteInfo.Picture.PictureUrl1
+        ? `url(${this.siteInfo.Picture.PictureUrl1})`
+        : `url('${require("@/assets/img/replacedImg1.jpg")}')`;
+    },
+    picture2() {
+      return this.siteInfo.Picture && this.siteInfo.Picture.PictureUrl2
+        ? `url(${this.siteInfo.Picture.PictureUrl2})`
+        : `url('${require("@/assets/img/replacedImg2.jpg")}')`;
+    },
   },
 
   methods: {
-    getSite(city, id) {
-      return getCitysiteInfo.getSite(city, id).then((res) => {
-        this.siteInfo = res.data[0]
-        return res.data[0].Position
-      })
+    getScenicSpot(city, id) {
+      return getApi.getScenicSpot(city, id).then((res) => {
+        this.siteInfo = res.data[0];
+        return res.data[0].Position;
+      });
     },
-    async getHotel(city, id) {
-      console.log('getHotel')
-      let hotel = await getCitysiteInfo.getHotel(city, id)
-      console.log(hotel.data[0])
-      this.siteInfo = hotel.data[0]
+    getHotel(city, id) {
+      return getApi.getHotel(city, id).then((res) => {
+        this.siteInfo = res.data[0];
+        return res.data[0].Position;
+      });
     },
-    async getRestaurant(city, id) {
-      console.log('get restaurant')
-      let restaurant = await getCitysiteInfo.getRestaurant(city, id)
-      console.log(restaurant.data[0])
-      this.siteInfo = restaurant.data[0]
+    getRestaurant(city, id) {
+      return getApi.getRestaurant(city, id).then((res) => {
+        this.siteInfo = res.data[0];
+        return res.data[0].Position;
+      });
     },
     getNearRestaurant(lat, lon, distance) {
-      return getCitysiteInfo
+      return getApi
         .getNearRestaurant(lat, lon, distance)
-        .then((res) => (this.nearByRestaurants = res.data))
+        .then((res) => (this.nearByRestaurants = res.data));
     },
     getNearSites(lat, lon, distance) {
-      return getCitysiteInfo
+      return getApi
         .getNearSites(lat, lon, distance)
-        .then((res) => (this.nearBySites = res.data))
+        .then((res) => (this.nearBySites = res.data));
     },
     getNearHotel(lat, lon, distance) {
-      return getCitysiteInfo
+      return getApi
         .getNearHotel(lat, lon, distance)
-        .then((res) => (this.nearByHotels = res.data))
+        .then((res) => (this.nearByHotels = res.data));
     },
     getGoogleMap(positionLat, positionLon) {
-      let googleMapAddress = `https://maps.google.com/maps?q=${positionLat},${positionLon}&z=16&output=embed`
-      this.googleMap = googleMapAddress
+      let googleMapAddress = `https://maps.google.com/maps?q=${positionLat},${positionLon}&z=16&output=embed`;
+      this.googleMap = googleMapAddress;
     },
   },
-  // created() {
-  //   console.log('created')
-  //   console.log(this.cityLink, this.id)
-  //   if (this.id.startsWith('C1')) {
-  //     console.log('景點')
-  //     this.getSite()
-  //       .then((res) => {
-  //         console.log(res, '呼叫餐廳')
-  //         this.getNearRestaurant(
-  //           res.PositionLat,
-  //           res.PositionLon,
-  //           this.distance,
-  //         )
-  //         return res
-  //       })
-  //       .then((res) => {
-  //         console.log(res, '呼叫住宿')
-  //         this.getNearHotel(res.PositionLat, res.PositionLon, this.distance)
-  //         return res
-  //       })
-  //       .then((res) => {
-  //         this.getGoogleMap(res.PositionLat, res.PositionLon)
-  //       })
-  //     return
-  //   }
-  // },
   async created() {
-    console.log('created')
-    console.log(this.cityLink, this.id)
-    let res = await this.getSite(this.cityLink, this.id)
-    let result = Promise.allSettled([
-      this.getNearHotel(res.PositionLat, res.PositionLon, this.distance),
-      this.getNearRestaurant(res.PositionLat, res.PositionLon, this.distance),
-      this.getGoogleMap(res.PositionLat, res.PositionLon),
-    ])
-    console.log(result)
+    let position;
+    switch (this.category) {
+      case "ScenicSpot":
+        position = await this.getScenicSpot(this.cityLink, this.id);
+        break;
+      case "Restaurant":
+        position = await this.getRestaurant(this.cityLink, this.id);
+        break;
+      case "Hotel":
+        position = await this.getHotel(this.cityLink, this.id);
+        break;
+    }
+
+    this.getGoogleMap(position.PositionLat, position.PositionLon);
+
+    // let result = Promise.allSettled([
+    //   this.getNearHotel(res.PositionLat, res.PositionLon, this.distance),
+    //   this.getNearRestaurant(res.PositionLat, res.PositionLon, this.distance),
+    //   this.getGoogleMap(res.PositionLat, res.PositionLon),
+    // ]);
   },
   beforeRouteUpdate(to) {
-    console.log('jump')
-    let nextId = to.params.id
-    let nextCity = to.params.city
-    if (nextId.startsWith('C4')) {
-      this.getHotel(nextCity, nextId)
+    console.log("jump");
+    let nextId = to.params.id;
+    let nextCity = to.params.city;
+    if (nextId.startsWith("C4")) {
+      this.getHotel(nextCity, nextId);
     } else {
-      this.getRestaurant(nextCity, nextId)
+      this.getRestaurant(nextCity, nextId);
     }
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-.thumbnail_area {
-  display: flex;
-  gap: 10px;
-  overflow: scroll;
+main {
+  .detail_des {
+    height: calc(100vh - 70px);
+  }
+  .info_des {
+    height: calc(100vh - 70px);
+  }
+  .route_info {
+    height: calc(100vh - 70px);
+  }
 }
-.site_info {
-  figure {
-    height: 450px;
-    margin-bottom: 20px;
-    position: relative;
-    .changePage_button {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
-      background: white;
-      position: absolute;
-      top: 5%;
-      left: 5%;
-      cursor: pointer;
-    }
-    img {
+
+.detail_des {
+  background: v-bind(picture1), white;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100%;
+  background-attachment: fixed;
+  overflow: scroll;
+  article {
+    width: 100%;
+    height: 50%;
+    padding: 30px 5px;
+    h3 {
+      box-sizing: border-box;
+      background: transparent;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
+      height: fit-content;
+      padding: 0 40px;
+      margin-bottom: 20px;
+      color: black;
+      font-size: 50px;
+      font-weight: 900;
+      text-align: center;
+    }
+    p {
+      padding: 10px;
+      line-height: 2;
+      &::first-letter {
+        font-size: 32px;
+        font-weight: 500;
+      }
     }
   }
-  article {
-    margin: 0 40px 20px;
-    letter-spacing: 1px;
-    &:first-letter {
+
+  @include breakpoint.tablet {
+    background-size: 50%;
+    background-position: center left;
+    article {
+      width: 50%;
+      height: 100%;
+      padding: 30px;
+      margin-left: auto;
+      p {
+        padding: 20px 25px;
+      }
+    }
+  }
+}
+.info_des {
+  background: v-bind(picture2), orange;
+  background-repeat: no-repeat;
+  background-position: top 30px center;
+  background-size: 100% 40%;
+  background-attachment: fixed;
+  display: flex;
+  &_group {
+    width: 100%;
+    height: 50%;
+    padding: 10px 20px;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    &_title {
       font-size: 28px;
-      font-weight: 900;
+      color: black;
+      margin-bottom: 30px;
+    }
+    &_content {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      img {
+        margin-right: 10px;
+        + * {
+          color: black;
+          font-size: 20px;
+          font-weight: 500;
+        }
+      }
+      p {
+        text-align: start;
+      }
+    }
+  }
+  @include breakpoint.tablet {
+    margin: 0;
+    background-size: 50% 60%;
+    background-position: center right;
+    ul {
+      width: 50%;
+      height: 100%;
+      margin-right: auto;
     }
   }
 }
 
-.site_info_des {
+* {
+  // outline: 1px solid black;
+}
+
+.route_info {
+  background: white;
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
-  text-align: start;
-  margin: 0 40px 20px;
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
+  div {
+    width: 100%;
+    height: 100%;
+  }
+  @include breakpoint.tablet {
+    flex-direction: row;
+    justify-content: left;
 
-  h4 {
-    font-size: 28px;
-  }
-  > * {
-    margin-bottom: 20px;
-  }
-  li {
-    > img {
-      margin-right: 10px;
-      vertical-align: middle;
+    iframe {
+      width: 50%;
+      height: 100%;
     }
-    span {
-      vertical-align: middle;
+    div {
+      width: 50%;
+      height: 100%;
     }
-  }
-}
-
-section {
-  background: orange;
-  padding: 20px 0 10px 0;
-  position: relative;
-}
-.nearBy_area {
-  .title {
-    font-size: 24px;
-    font-weight: 800;
-    padding-left: 40px;
-    text-align: start;
-    color: black;
   }
 }
 </style>
