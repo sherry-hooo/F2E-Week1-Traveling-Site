@@ -68,7 +68,7 @@ export default {
     },
     chooseCity(event) {
       this.chosedCity = event.target.value;
-      this.toggleMenu()
+      this.toggleMenu();
     },
     goSearch(cityLink) {
       if (this.chosedCityLink === "請選擇縣市") {
@@ -88,7 +88,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
 
   @include breakpoint.mobile {
     justify-content: flex-end;
@@ -99,6 +98,7 @@ export default {
     box-sizing: border-box;
     width: 150px;
     padding: 5px;
+    margin-bottom: 20px;
     border-radius: 24px;
     border: 1px solid black;
     cursor: pointer;
