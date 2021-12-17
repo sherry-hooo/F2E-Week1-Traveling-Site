@@ -13,8 +13,8 @@
     <p class="about">關於我們</p>
     <p>立志成為幫忙發現台灣之美的眼睛 幫您找出下一個旅遊景點</p>
     <div>
-      <p>UI Design：Rex Lai</p>
-      <p>Web Design：Hooo.</p>
+      <p>UI Design &colon; Rex Lai、Hooo.</p>
+      <p>Web Design &colon; Hooo.</p>
     </div>
     <p>Copyright &copy; 2021 要去哪裡鴨. All rights reserved.</p>
   </footer>
@@ -22,7 +22,6 @@
 
 <script>
 import Menu from "@/components/Menu.vue";
-
 
 export default {
   components: {
@@ -54,9 +53,9 @@ export default {
   }
 }
 
-* {
+:root {
   font-size: 16px;
-  @media (min-width: 992px) {
+  @include breakpoint.desktop {
     font-size: 20px;
   }
 }
@@ -64,7 +63,7 @@ export default {
 #nav {
   box-sizing: border-box;
   width: 100%;
-  height: 100px;
+  height: 70px;
   background: white;
   border-bottom: 1px solid black;
 
@@ -91,7 +90,6 @@ export default {
   }
 
   @include breakpoint.mobile {
-    height: 70px;
     flex-wrap: nowrap;
     justify-content: space-between;
   }
