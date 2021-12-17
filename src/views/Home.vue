@@ -18,7 +18,7 @@
         <img class="whiteDuck" alt="white-duck" src="@/assets/img/哪裡鴨.svg" />
       </figure>
     </section>
-    <!-- 台灣地圖區 -->
+    <!-- 地圖區 -->
     <section class="map_area">
       <div class="map_area_description">
         <p class="title">
@@ -31,6 +31,9 @@
             class="district"
             :data-name="district"
             @mouseenter="hoverDistrict(district)"
+            :class="{
+              hoverDistrict: this.hoveredDistrict === district,
+            }"
           >
             {{ district }}
           </button>
@@ -121,11 +124,9 @@ main {
     top: 70px;
   }
   .banner_area {
-    box-sizing: content-box;
     height: calc(100vh - 70px);
   }
   .map_area {
-    box-sizing: content-box;
     height: calc(100vh - 70px);
   }
 }
@@ -141,12 +142,11 @@ main {
 }
 // banner
 .banner_area {
-  box-sizing: border-box;
   width: 100%;
-  padding: 40px 0 240px 30px;
+  padding: 100px 0 50px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: start;
   position: relative;
@@ -154,13 +154,11 @@ main {
 
   .slogan {
     align-self: center;
-    width: 40%;
+    width: 60%;
     z-index: 0;
-    align-self: flex-start;
 
-    @include breakpoint.mobile {
-      width: 60%;
-      align-self: center;
+    @include breakpoint.desktop {
+      width: 40%;
     }
   }
 
@@ -170,6 +168,8 @@ main {
     position: absolute;
     z-index: -1;
     bottom: 0;
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
@@ -177,22 +177,22 @@ main {
 .map_area {
   color: black;
   font-size: 12px;
-  padding: 70px 20px 40px;
+  padding: 100px 20px 0;
 
   display: block;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  @include breakpoint.tablet {
+  @include breakpoint.desktop {
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    padding: 70px 20px 0;
+    padding: 100px 20px 0;
   }
   .Taiwan {
     width: 100%;
     height: calc(80vh - 70px);
-    transform: translateX(-50px);
+    transform: translateX(-10px);
     > svg {
       width: 100%;
       height: 100%;
@@ -209,7 +209,7 @@ main {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    @include breakpoint.tablet {
+    @include breakpoint.desktop {
       flex: 1 1 40%;
       width: 40%;
     }
@@ -228,10 +228,14 @@ main {
     }
     .cityLink_buttons {
       width: 100%;
-      margin-bottom: 50px;
+      margin-bottom: 10px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
+
+      @include breakpoint.desktop {
+        margin-bottom: 50px;
+      }
 
       .district {
         aspect-ratio: 1;
@@ -245,11 +249,6 @@ main {
         font-weight: 700;
         font-size: 16px;
         transition: all 0.5s;
-        &:hover {
-          background: none;
-          color: #3b6c85;
-          transition: all 0.5s;
-        }
         @include breakpoint.mobile {
           font-size: 20px;
           width: 80px;
@@ -261,22 +260,21 @@ main {
           height: 80px;
         }
       }
+      .hoverDistrict {
+        background: none;
+        color: #3b6c85;
+        transition: all 0.5s;
+      }
     }
   }
 }
 
 // cities 縣市列表
 .cities_group {
-  padding: 0 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  @include breakpoint.tablet {
-    flex-direction: column;
-    width: 100%;
-  }
   a {
-    width: fit-content;
     margin: 10px;
   }
 }
@@ -294,7 +292,8 @@ main {
   justify-content: flex-start;
 
   .dropDown_menu {
-    width: 80%;
+    width: 100%;
+    max-width: 650px;
     height: 60px;
     padding: 20px 30px;
     border-radius: 24px;
@@ -310,7 +309,7 @@ main {
   .dropDown_select {
     border: 1px solid black;
     border-radius: 24px;
-    width: 80%;
+    max-width: 650px;
     top: 80px;
     bottom: 0;
     left: 0;
@@ -319,7 +318,8 @@ main {
     height: fit-content;
   }
   .search_button {
-    width: 80%;
+    width: 100%;
+    max-width: 650px;
     height: 60px;
     border-radius: 24px;
     outline: none;
