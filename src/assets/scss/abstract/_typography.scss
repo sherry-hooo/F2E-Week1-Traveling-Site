@@ -1,0 +1,31 @@
+@use "./breakpoint";
+
+%main-title {
+  font-size: 24px;
+  @include breakpoint.tablet {
+    font-size: 30px;
+  }
+  @include breakpoint.tablet {
+    font-size: 34px;
+  }
+}
+
+%main-title {
+  font-size: 20px;
+  @include breakpoint.tablet {
+    font-size: 22px;
+  }
+  @include breakpoint.tablet {
+    font-size: 24px;
+  }
+}
+
+%content {
+  font-size: 16px;
+  @include breakpoint.tablet {
+    font-size: 18px;
+  }
+  @include breakpoint.tablet {
+    font-size: 20px;
+  }
+}
