@@ -194,6 +194,7 @@ main {
     height: 50%;
     padding: 30px 5px;
     h3 {
+      @extend %main-title;
       box-sizing: border-box;
       background: transparent;
       width: 100%;
@@ -201,15 +202,15 @@ main {
       padding: 0 40px;
       margin-bottom: 20px;
       color: black;
-      font-size: 50px;
       font-weight: 900;
       text-align: center;
     }
     p {
+      @extend %content;
       padding: 10px;
       line-height: 2;
       &::first-letter {
-        font-size: 32px;
+        font-size: 30px;
         font-weight: 500;
       }
     }
@@ -246,11 +247,12 @@ main {
     align-items: flex-start;
     justify-content: center;
     &_title {
-      font-size: 28px;
+      @extend %sub-title;
       color: black;
       margin-bottom: 30px;
     }
     &_content {
+      @extend %content;
       display: flex;
       align-items: flex-start;
       margin-bottom: 10px;
@@ -280,11 +282,6 @@ main {
     }
   }
 }
-
-* {
-  // outline: 1px solid black;
-}
-
 .route_info {
   background: white;
   background-attachment: fixed;
@@ -304,7 +301,7 @@ main {
     justify-content: space-evenly;
     align-items: center;
     .title {
-      font-size: 30px;
+      @extend %sub-title;
       font-weight: 900;
       text-align: center;
     }
