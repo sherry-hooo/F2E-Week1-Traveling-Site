@@ -98,10 +98,10 @@ main {
   display: flex;
   flex-direction: column;
   aside {
-    height: 30%;
+    height: 40%;
   }
   .search {
-    height: 70%;
+    height: 60%;
     overflow: scroll;
   }
   @include breakpoint.mobile {
@@ -135,25 +135,35 @@ aside {
     width: fit-content;
     border: 3px solid black;
     border-radius: 50%;
-    padding: 10px;
-    font-size: 20px;
+    padding: 5px;
+    font-size: 16px;
     background: white;
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 10px;
+    right: 10px;
     z-index: 5;
     cursor: pointer;
+    @include breakpoint.tablet {
+      padding: 10px;
+      top: 15px;
+      right: 15px;
+      font-size: 20px;
+    }
     @include breakpoint.desktop {
       display: none;
     }
   }
   .cityDes {
     height: 100%;
-    padding: 25px;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    @include breakpoint.mobile {
+      padding: 15px;
+    }
     @include breakpoint.desktop {
+      padding: 25px;
       width: 100%;
       height: 30%;
     }
