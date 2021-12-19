@@ -1,14 +1,27 @@
 <template>
   <main>
-    <aside>
-      <div class="search_title">
-        <h3>{{ cityName }}</h3>
+    <!-- 簡介 + leaflet 地圖 -->
+    <aside class="flip_card">
+      <div class="map_icon" @click="flipAnotherSide = !flipAnotherSide">
+        <i class="fas fa-map fa-fw" v-if="!flipAnotherSide"></i>
+        <i class="fas fa-info fa-fw" v-else></i>
       </div>
-
-      <div class="cityMap">
-        <Map></Map>
+      <div
+        class="flip_card_inner"
+        :class="{ flipAnotherSide: flipAnotherSide === true }"
+      >
+        <div class="cityDes flip_card_frontSide">
+          <h3 class="cityDes_title">
+            {{ cityName }}
+          </h3>
+          <p class="cityDes_intro">{{ citiesIntro }}</p>
+        </div>
+        <div class="cityMap flip_card_backSide">
+          <Map></Map>
+        </div>
       </div>
     </aside>
+    <!-- api 區 -->
     <section class="search">
       <div class="search_filters">
         <router-link :to="{ name: 'ScenicSpot', params: { cityLink } }"
@@ -54,11 +67,15 @@ export default {
   data() {
     return {
       activityList: [],
+      flipAnotherSide: false,
     };
   },
   computed: {
     citiesList() {
       return citiesList;
+    },
+    citiesIntro() {
+      return citiesList.find((city) => city.cityLink === this.cityLink).intro;
     },
     lastPage() {
       // return this.citySitesList.length < 30;
@@ -77,25 +94,33 @@ export default {
 
 <style lang="scss" scoped>
 main {
+  height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
-  @include breakpoint.desktop {
+  aside {
+    height: 30%;
+  }
+  .search {
+    height: 70%;
+    overflow: scroll;
+  }
+  @include breakpoint.mobile {
     height: calc(100vh - 70px);
+  }
+  @include breakpoint.desktop {
     flex-direction: row;
     flex-wrap: wrap;
     aside {
       flex: 1 1 50%;
       width: 50%;
       height: 100%;
-      overflow: scroll;
+      overflow: hidden;
     }
     .search {
       flex: 1 1 50%;
       width: 50%;
       height: 100%;
       overflow: scroll;
-    }
-    .citySlider {
     }
   }
 }
@@ -104,19 +129,48 @@ aside {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  .search_title {
+  position: relative;
+  z-index: 0;
+  .map_icon {
+    width: fit-content;
+    border: 3px solid black;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 20px;
+    background: white;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 5;
+    cursor: pointer;
+    @include breakpoint.desktop {
+      display: none;
+    }
+  }
+  .cityDes {
+    height: 100%;
     padding: 25px;
-    margin-bottom: 10px;
-    h3,
-    h4 {
-      font-size: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    @include breakpoint.desktop {
+      width: 100%;
+      height: 30%;
+    }
+    &_title {
+      @extend %main-title;
+    }
+    &_intro {
+      @extend %content;
     }
   }
 
   .cityMap {
-    width: 100%;
-    height: 70%;
-    margin-top: auto;
+    @include breakpoint.desktop {
+      display: block;
+      width: 100%;
+      height: 70%;
+    }
   }
 }
 .search {
@@ -125,15 +179,16 @@ aside {
   display: flex;
   flex-direction: column;
   .search_filters {
-    padding: 20px 0;
-    margin-bottom: 10px;
+    margin: 10px 0;
     display: flex;
-    gap: 20px;
     justify-content: center;
     a {
+      width: 48px;
+      height: 48px;
+      line-height: 48px;
       border: 3px solid black;
       border-radius: 50%;
-      padding: 20px;
+      margin: 10px;
       color: black;
       cursor: pointer;
       transition: all 0.3s linear;
@@ -142,7 +197,18 @@ aside {
         transition: all 0.3s linear;
       }
       i {
-        font-size: 30px;
+        font-size: 24px;
+      }
+    }
+
+    @include breakpoint.tablet {
+      a {
+        width: 70px;
+        height: 70px;
+        line-height: 70px;
+        i {
+          font-size: 30px;
+        }
       }
     }
   }
@@ -185,6 +251,48 @@ aside {
     background: #aeaeae;
     color: white;
     transition: all 0.5s;
+  }
+}
+
+.flip_card {
+  perspective: 1000px;
+  .flipAnotherSide {
+    transform: rotateY(180deg);
+    transition: all 0.6s;
+  }
+  &_inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.6s;
+  }
+  &_frontSide {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transition: all 0.6s;
+  }
+  &_backSide {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    transition: all 0.6s;
+  }
+  @include breakpoint.desktop {
+    perspective: 0;
+    &_inner,
+    &_frontSide,
+    &_backSide {
+      position: unset;
+      transform: unset;
+      transition: unset;
+    }
   }
 }
 </style>
