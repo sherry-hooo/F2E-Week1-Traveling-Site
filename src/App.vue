@@ -47,10 +47,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  padding-top: 100px;
-  @include breakpoint.mobile {
-    padding-top: 70px;
-  }
 }
 
 :root {
@@ -61,10 +57,11 @@ export default {
 }
 
 #nav {
+  background: white;
   box-sizing: border-box;
   width: 100%;
-  height: 70px;
-  background: white;
+  height: 100px;
+  padding: 5px;
   border-bottom: 1px solid black;
 
   display: flex;
@@ -76,9 +73,7 @@ export default {
   z-index: 999;
 
   a {
-    margin: 0 50px;
     float: left;
-
     h1 {
       width: 150px;
       font-size: 0;
@@ -90,8 +85,17 @@ export default {
   }
 
   @include breakpoint.mobile {
+    height: 70px;
+    padding: 5px 15px;
     flex-wrap: nowrap;
     justify-content: space-between;
+  }
+}
+
+header + main {
+  margin-top: 100px;
+  @include breakpoint.mobile {
+    margin-top: 70px;
   }
 }
 
