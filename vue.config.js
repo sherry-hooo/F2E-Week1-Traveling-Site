@@ -4,7 +4,9 @@ module.exports = {
   css: {
     loaderOptions: {
       scss: {
-        prependData: `@use "@/assets/scss/abstract/_breakpoint.scss";`,
+        prependData: `@use "@/assets/scss/abstract/_breakpoint.scss";
+        @use "@/assets/scss/abstract/_typography.scss";
+        `,
       },
     },
   },
