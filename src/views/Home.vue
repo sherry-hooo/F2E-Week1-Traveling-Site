@@ -114,20 +114,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// main layout
+// home page layout
 main {
   overflow: hidden;
   padding-bottom: 50vh;
   .main_bg {
     position: fixed;
     z-index: -1;
-    top: 70px;
+    top: 100px;
   }
-  .banner_area {
-    height: calc(100vh - 70px);
-  }
+  .banner_area,
   .map_area {
-    height: calc(100vh - 70px);
+    height: calc(100vh - 100px);
+  }
+
+  @include breakpoint.mobile {
+    .main_bg {
+      top: 70px;
+    }
+    .banner_area,
+    .map_area {
+      height: calc(100vh - 70px);
+    }
   }
 }
 
@@ -143,7 +151,7 @@ main {
 // banner
 .banner_area {
   width: 100%;
-  padding: 100px 0 50px;
+  padding: 50px 0 50px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -152,6 +160,10 @@ main {
   position: relative;
   z-index: 0;
 
+  @include breakpoint.desktop {
+    padding-top: 100px;
+  }
+
   .slogan {
     align-self: center;
     width: 60%;
@@ -159,11 +171,15 @@ main {
 
     @include breakpoint.desktop {
       width: 40%;
+      img {
+        height: 220px;
+      }
     }
   }
 
   figure {
     width: 100%;
+    height: 25%;
     text-align: end;
     position: absolute;
     z-index: -1;
@@ -297,6 +313,7 @@ main {
     height: 60px;
     padding: 20px 30px;
     border-radius: 24px;
+    margin-bottom: 20px;
     background: #ffffff;
     cursor: pointer;
     display: flex;
