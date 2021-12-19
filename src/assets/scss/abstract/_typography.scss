@@ -1,21 +1,21 @@
 @use "./breakpoint";
 
 %main-title {
-  font-size: 24px;
-  @include breakpoint.tablet {
-    font-size: 30px;
-  }
+  font-size: 30px;
   @include breakpoint.tablet {
     font-size: 34px;
   }
+  @include breakpoint.desktop {
+    font-size: 40px;
+  }
 }
 
-%main-title {
+%sub-title {
   font-size: 20px;
   @include breakpoint.tablet {
     font-size: 22px;
   }
-  @include breakpoint.tablet {
+  @include breakpoint.desktop {
     font-size: 24px;
   }
 }
@@ -25,7 +25,7 @@
   @include breakpoint.tablet {
     font-size: 18px;
   }
-  @include breakpoint.tablet {
+  @include breakpoint.desktop {
     font-size: 20px;
   }
 }
