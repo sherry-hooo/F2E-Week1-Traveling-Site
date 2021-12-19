@@ -83,7 +83,7 @@ export default {
 <style lang="scss" scoped>
 .menu {
   width: 100%;
-  padding: 10px;
+  // padding: 10px;
   position: relative;
   display: flex;
   justify-content: center;
@@ -98,10 +98,10 @@ export default {
     box-sizing: border-box;
     width: 150px;
     padding: 5px;
-    margin-bottom: 20px;
     border-radius: 24px;
     border: 1px solid black;
     cursor: pointer;
+    margin-right: 10px;
 
     display: flex;
     justify-content: space-around;
@@ -114,6 +114,7 @@ export default {
       font-size: 20px;
       height: 100%;
       width: 200px;
+      margin-bottom: 0;
     }
   }
   .search_button {
@@ -143,14 +144,13 @@ export default {
 // 下拉式選單
 .dropDown_select {
   background: white;
-  width: 100%;
+  width: calc(100% + 10px);
   border-bottom: 1px solid black;
   padding: 20px 10px;
   position: absolute;
   z-index: 10;
   top: 100%;
-  left: 0;
-  right: 0;
+  left: -5px;
   transition: all 0.4s ease-in-out;
 
   display: grid;
@@ -158,10 +158,12 @@ export default {
   row-gap: 10px;
   column-gap: 2px;
   justify-items: center;
-  @media (min-width: 576px) {
+  @include breakpoint.mobile {
     grid-template-columns: repeat(3, 1fr);
+    width: calc(100% + 30px);
+    left: -15px;
   }
-  @media (min-width: 768px) {
+  @include breakpoint.tablet {
     padding: 20px;
     grid-template-columns: repeat(4, 1fr);
   }
