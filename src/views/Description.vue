@@ -238,6 +238,7 @@ main {
   background-attachment: fixed;
   display: flex;
   &_group {
+    background: orange;
     width: 100%;
     height: 50%;
     padding: 10px 20px;

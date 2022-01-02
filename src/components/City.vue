@@ -27,7 +27,6 @@ export default {
       return citiesList;
     },
     cityIntroduction() {
-      console.log(this.citiesList);
       return this.citiesList.find(
         (city) => city.cityName === this.city.cityName
       ).intro;
