@@ -1,39 +1,111 @@
-<template v-if="scenicSpotList">
-  <ResultCard
-    v-for="scenicSpot of displayList"
-    :key="scenicSpot.id"
-    :cardData="scenicSpot"
-    :cityLink="$route.params.cityLink"
-  ></ResultCard>
+<template>
+  <div class="search_content">
+    <template v-if="isLoading">
+      <LoadingCard v-for="loadingCard of 10" :key="loadingCard"></LoadingCard>
+    </template>
+    <ResultCard
+      v-else
+      v-for="(scenicSpot, index) of scenicSpotCardInfo"
+      :key="scenicSpot.id"
+      :cardData="scenicSpot"
+      :index="index"
+      :cityLink="$route.params.cityLink"
+    ></ResultCard>
+  </div>
+  <Pagination
+    :totalPage="totalPage"
+    @sentCurrentPage="getCurrentPage"
+  ></Pagination>
 </template>
 
 <script>
 import ResultCard from "@/components/ResultCard.vue";
+import LoadingCard from "@/components/LoadingCard.vue";
 import getApi from "@/services/getApi.js";
+import Pagination from "@/components/Pagination.vue";
 
 export default {
-  components: { ResultCard },
+  components: { ResultCard, Pagination, LoadingCard },
   data() {
     return {
-      cityLink: this.$route.params.cityLink,
       scenicSpotList: [],
+      currentPage: 1,
+      cardsPerPage: 12,
+      isLoading: true,
     };
   },
   computed: {
-    displayList() {
-      return this.scenicSpotList.slice(0, 10);
+    totalPage() {
+      return Math.ceil(this.scenicSpotList.length / this.cardsPerPage);
+    },
+    scenicSpotCardInfo() {
+      const firstIndex = this.cardsPerPage * (this.currentPage - 1);
+      const lastIndex = this.cardsPerPage * this.currentPage;
+      return this.scenicSpotList
+        .map((scenicSpot) => ({
+          ID: scenicSpot.ScenicSpotID,
+          Name: scenicSpot.ScenicSpotName,
+          Picture: scenicSpot.Picture,
+        }))
+        .slice(firstIndex, lastIndex);
+    },
+    cityLink() {
+      return this.$route.params.cityLink;
     },
   },
   methods: {
-    getCityScenicSpot(city) {
+    getAllScenicSpotByCity(city) {
       getApi
-        .getCityScenicSpot(city)
-        .then((res) => (this.scenicSpotList = res.data));
+        .getAllScenicSpotByCity(city)
+        .then((res) => (this.scenicSpotList = res.data))
+        .then(() =>
+          setTimeout(() => {
+            this.isLoading = false;
+          }, 1000)
+        );
+    },
+    getCurrentPage(data) {
+      this.currentPage = data;
+      this.isLoading = true;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
+      this.scrollToTop();
+      this.windowScrollToTop();
+    },
+    scrollToTop() {
+      const element = document.querySelector(".search_content");
+      element.scrollIntoView({
+        block: "start",
+        behavior: "smooth",
+      });
+      // 為什麼沒有用？
+      // element.scroll({
+      //   top: 0,
+      //   left: 0,
+      //   behavior: "smooth",
+      // });
+    },
+    windowScrollToTop() {
+      window.scroll({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+    testScroll() {
+      const cardContainer = document.querySelector(".search_content");
+      console.log(cardContainer);
     },
   },
   created() {
     let searchCity = this.$route.params.cityLink;
-    this.getCityScenicSpot(searchCity);
+    this.getAllScenicSpotByCity(searchCity);
+  },
+  watch: {
+    cityLink() {
+      this.isLoading = true;
+      this.getAllScenicSpotByCity(this.cityLink);
+    },
   },
 };
 </script>

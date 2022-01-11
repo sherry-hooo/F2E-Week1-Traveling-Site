@@ -2,14 +2,11 @@
   <main>
     <!-- 簡介 + leaflet 地圖 -->
     <aside class="flip_card">
-      <div class="map_icon" @click="flipAnotherSide = !flipAnotherSide">
-        <i class="fas fa-map fa-fw" v-if="!flipAnotherSide"></i>
+      <div class="map_icon" @click="mapSide = !mapSide">
+        <i class="fas fa-map fa-fw" v-if="!mapSide"></i>
         <i class="fas fa-info fa-fw" v-else></i>
       </div>
-      <div
-        class="flip_card_inner"
-        :class="{ flipAnotherSide: flipAnotherSide === true }"
-      >
+      <div class="flip_card_inner" :class="{ flipMapSide: mapSide === true }">
         <div class="cityDes flip_card_frontSide">
           <h3 class="cityDes_title">
             {{ cityName }}
@@ -17,12 +14,12 @@
           <p class="cityDes_intro">{{ citiesIntro }}</p>
         </div>
         <div class="cityMap flip_card_backSide">
-          <Map></Map>
+          <Map :city="cityLink"></Map>
         </div>
       </div>
     </aside>
     <!-- api 區 -->
-    <section class="search">
+    <section class="search" :class="{ scrollMode: mapSide }">
       <div class="search_filters">
         <router-link :to="{ name: 'ScenicSpot', params: { cityLink } }"
           ><i class="fas fa-mountain fa-fw"></i>
@@ -47,13 +44,8 @@
           <i class="fas fa-calendar-alt fa-fw"></i>
         </router-link>
       </div>
-      <div class="search_content">
-        <router-view />
-      </div>
+      <router-view />
     </section>
-    <button v-if="!lastPage" @click="changePage" class="more_button">
-      看更多
-    </button>
   </main>
 </template>
 
@@ -67,7 +59,7 @@ export default {
   data() {
     return {
       activityList: [],
-      flipAnotherSide: false,
+      mapSide: false,
     };
   },
   computed: {
@@ -77,37 +69,28 @@ export default {
     citiesIntro() {
       return citiesList.find((city) => city.cityLink === this.cityLink).intro;
     },
-    lastPage() {
-      // return this.citySitesList.length < 30;
-      // 待改
-      return true;
-    },
   },
-  methods: {
-    changePage() {
-      this.skip += 30;
-    },
-  },
-  created() {},
+  methods: {},
 };
 </script>
 
 <style lang="scss" scoped>
 main {
-  height: calc(100vh - 100px);
-  display: flex;
-  flex-direction: column;
+  min-height: calc(100vh - 100px);
   aside {
-    height: 40%;
+    height: 200px;
   }
   .search {
     height: 60%;
+    min-height: calc(100vh - 70px - 200px);
     overflow: scroll;
   }
   @include breakpoint.mobile {
-    height: calc(100vh - 70px);
+    min-height: calc(100vh - 70px);
   }
   @include breakpoint.desktop {
+    display: flex;
+    height: calc(100vh - 70px);
     flex-direction: row;
     flex-wrap: wrap;
     aside {
@@ -132,7 +115,6 @@ aside {
   position: relative;
   z-index: 0;
   .map_icon {
-    width: fit-content;
     border: 3px solid black;
     border-radius: 50%;
     padding: 5px;
@@ -189,7 +171,7 @@ aside {
   display: flex;
   flex-direction: column;
   .search_filters {
-    margin: 10px 0;
+    padding: 10px 0;
     display: flex;
     justify-content: center;
     a {
@@ -201,45 +183,44 @@ aside {
       margin: 10px;
       color: black;
       cursor: pointer;
-      transition: all 0.3s linear;
+      transition: background-color 0.2s ease-in;
+      &:hover {
+        transform: translate(2px, -4px);
+      }
       &.router-link-exact-active {
-        background: orange;
+        background-color: orange;
         transition: all 0.3s linear;
       }
       i {
         font-size: 24px;
       }
     }
-
-    @include breakpoint.tablet {
-      a {
-        width: 70px;
-        height: 70px;
-        line-height: 70px;
-        i {
-          font-size: 30px;
-        }
-      }
-    }
   }
-  .search_content {
-    padding: 10px;
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    gap: 20px;
-
-    @include breakpoint.mobile {
-      grid-template-columns: repeat(2, 1fr);
-      row-gap: 30px;
-    }
-    @include breakpoint.tablet {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    @include breakpoint.desktop {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    @include breakpoint.bgScreen {
-      grid-template-columns: repeat(3, 1fr);
+  ::v-deep .search_content {
+    min-height: 50%;
+    padding: 0 10px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+    > a {
+      width: calc(100% - 20px);
+      margin: 10px;
+      @include breakpoint.mobile {
+        aspect-ratio: 1;
+        width: calc(50% - 30px);
+        margin: 15px;
+      }
+      @include breakpoint.tablet {
+        width: calc(33.3% - 20px);
+        margin: 10px;
+      }
+      @include breakpoint.desktop {
+        width: calc(50% - 20px);
+        height: calc(50% - 20px);
+      }
+      @include breakpoint.bgScreen {
+        width: calc(33.3% - 20px);
+      }
     }
   }
 }
@@ -266,7 +247,7 @@ aside {
 
 .flip_card {
   perspective: 1000px;
-  .flipAnotherSide {
+  .flipMapSide {
     transform: rotateY(180deg);
     transition: all 0.6s;
   }
@@ -278,8 +259,8 @@ aside {
     transition: all 0.6s;
   }
   &_frontSide {
-    position: absolute;
-    top: 0;
+    // position: absolute;
+    // top: 0;
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
@@ -289,10 +270,13 @@ aside {
     position: absolute;
     top: 0;
     width: 100%;
-    height: 100%;
+    height: calc((100vh - 100px) * 0.6);
     backface-visibility: hidden;
     transform: rotateY(180deg);
     transition: all 0.6s;
+    @include breakpoint.mobile {
+      height: calc((100vh - 70px) * 0.6);
+    }
   }
   @include breakpoint.desktop {
     perspective: 0;
@@ -304,5 +288,53 @@ aside {
       transition: unset;
     }
   }
+}
+
+aside + .scrollMode {
+  height: calc((100vh - 100px) * 0.4);
+  min-height: initial;
+  margin-top: calc((100vh - 100px) * 0.6 - 200px);
+  .search_filters {
+    width: 100%;
+    margin: 0;
+    a {
+      margin: 0 10px;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      i {
+        font-size: 18px;
+      }
+    }
+  }
+  ::v-deep .search_content {
+    flex-wrap: nowrap;
+    overflow: scroll;
+    > a {
+      margin: 0 10px;
+      min-width: 150px;
+      .myCard {
+        padding: 0;
+        border: none;
+      }
+    }
+  }
+  @include breakpoint.mobile {
+    height: calc((100vh - 70px) * 0.4);
+    margin-top: calc((100vh - 70px) * 0.6 - 200px);
+  }
+}
+
+%thumbnail_text {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 40%;
+  background: #ffffffa1;
+  backdrop-filter: blur(3px);
+  /* text-align: center; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

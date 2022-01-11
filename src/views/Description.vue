@@ -1,8 +1,11 @@
 <template>
   <main class="description" v-if="siteInfo">
+    <button class="goLastPage_btn" @click="backLastPage">
+      <i class="fas fa-arrow-left"></i>
+    </button>
     <section class="detail_des">
       <article class="site_info_detail">
-        <h3>{{ siteInfo.Name }}</h3>
+        <h3>{{ name }}</h3>
         <p v-if="siteInfo.DescriptionDetail || siteInfo.Description">
           {{ siteInfo.DescriptionDetail || siteInfo.Description }}
         </p>
@@ -10,7 +13,7 @@
     </section>
     <section class="info_des">
       <ul class="info_des_group">
-        <h4 class="info_des_group_title">{{ siteInfo.Name }}</h4>
+        <h4 class="info_des_group_title">{{ name }}</h4>
         <li class="info_des_group_content" v-if="siteInfo.Address">
           <img src="@/assets/img/location.svg" alt="地址圖示" />
           <p>{{ siteInfo.Address }}</p>
@@ -91,7 +94,7 @@ export default {
     picture2() {
       return this.siteInfo.Picture && this.siteInfo.Picture.PictureUrl2
         ? `url(${this.siteInfo.Picture.PictureUrl2})`
-        : `url('${require("@/assets/img/replacedImg2.jpg")}')`;
+        : `url('${require("@/assets/img/replacedImg1.jpg")}')`;
     },
   },
 
@@ -133,6 +136,10 @@ export default {
       let googleMapAddress = `https://maps.google.com/maps?q=${positionLat},${positionLon}&z=16&output=embed`;
       this.googleMap = googleMapAddress;
     },
+    backLastPage() {
+      console.log("push");
+      this.$router.push({ name: "Search" });
+    },
   },
   async created() {
     let position;
@@ -149,12 +156,6 @@ export default {
     }
 
     this.getGoogleMap(position.PositionLat, position.PositionLon);
-
-    // let result = Promise.allSettled([
-    //   this.getNearHotel(res.PositionLat, res.PositionLon, this.distance),
-    //   this.getNearRestaurant(res.PositionLat, res.PositionLon, this.distance),
-    //   this.getGoogleMap(res.PositionLat, res.PositionLon),
-    // ]);
   },
   beforeRouteUpdate(to) {
     console.log("jump");
@@ -171,14 +172,15 @@ export default {
 
 <style lang="scss" scoped>
 main {
+  position: relative;
   .detail_des {
     height: calc(100vh - 70px);
   }
   .info_des {
-    height: calc(100vh - 70px);
+    height: 100vh;
   }
   .route_info {
-    height: calc(100vh - 70px);
+    height: 100vh;
   }
 }
 
@@ -200,7 +202,6 @@ main {
       width: 100%;
       height: fit-content;
       padding: 0 40px;
-      margin-bottom: 20px;
       color: black;
       font-weight: 900;
       text-align: center;
@@ -209,6 +210,8 @@ main {
       @extend %content;
       padding: 10px;
       line-height: 2;
+      background: #ffffff69;
+      backdrop-filter: blur(15px);
       &::first-letter {
         font-size: 30px;
         font-weight: 500;
@@ -233,8 +236,8 @@ main {
 .info_des {
   background: v-bind(picture2), orange;
   background-repeat: no-repeat;
-  background-position: top 30px center;
-  background-size: 100% 40%;
+  background-position: top center;
+  background-size: 100% 50%;
   background-attachment: fixed;
   display: flex;
   &_group {
@@ -245,7 +248,7 @@ main {
     margin-top: auto;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     &_title {
       @extend %sub-title;
@@ -263,12 +266,9 @@ main {
         margin-right: 10px;
         + * {
           color: black;
-          font-size: 20px;
-          font-weight: 500;
+          // font-size: 20px;
+          // font-weight: 500;
         }
-      }
-      p {
-        text-align: start;
       }
     }
   }
@@ -293,19 +293,14 @@ main {
     height: 100%;
   }
   div {
+    @extend %content;
     width: 100%;
     height: 100%;
     padding: 0 30px;
-    border: 2px solid black;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    .title {
-      @extend %sub-title;
-      font-weight: 900;
-      text-align: center;
-    }
   }
   @include breakpoint.tablet {
     flex-direction: row;
@@ -319,6 +314,49 @@ main {
       width: 50%;
       height: 100%;
     }
+  }
+}
+
+// 回上一頁button
+.goLastPage_btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: black;
+  border: 1px solid black;
+  cursor: pointer;
+  opacity: 0.1;
+
+  position: absolute;
+  top: 5px;
+  left: 15px;
+  i {
+    color: white;
+    font-size: 20px;
+  }
+  &:hover {
+    opacity: 0.7;
+    i {
+      animation: pointingLeft 0.8s infinite alternate;
+    }
+  }
+  @include breakpoint.tablet {
+    width: 50px;
+    height: 50px;
+    top: 15px;
+    left: 15px;
+    i {
+      font-size: 30px;
+    }
+  }
+}
+
+@keyframes pointingLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-3px);
   }
 }
 </style>

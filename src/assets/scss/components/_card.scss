@@ -2,12 +2,11 @@
 
 .myCard {
   color: black;
-  min-width: 200px;
-  min-height: fit-content;
+  width: 100%;
   height: 100%;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
   border-bottom: 1px solid #aeaeae;
+  padding-bottom: 20px;
+  overflow: hidden;
   display: flex;
 
   &_thumbnail {
@@ -59,11 +58,10 @@
 
 @include breakpoint.mobile {
   .myCard {
-    max-width: 250px;
-    height: 250px;
-    padding: 0;
     border-radius: 20px;
+    border: none;
     margin: 0 auto;
+    padding: 0;
     position: relative;
     z-index: 0;
     display: flex;
@@ -91,6 +89,16 @@
       &:hover {
         background: orange;
         transition: all 0.4s linear;
+        > h4 {
+          -webkit-line-clamp: 3;
+          transition: all 0.2s ease-in-out;
+        }
+        &::after {
+          content: "\2192 ";
+          display: inline-block;
+          margin-left: 5px;
+          animation: pointing 0.4s infinite linear alternate;
+        }
 
       }
 
@@ -103,17 +111,6 @@
         -webkit-line-clamp: 1;
         overflow: hidden;
         transition: all 0.2s ease-in-out;
-
-        &:hover {
-          -webkit-line-clamp: 3;
-          transition: all 0.2s ease-in-out;
-        }
-        &:hover::after {
-          content: "\2192 ";
-          display: inline-block;
-          margin-left: 5px;
-          animation: pointing 0.4s infinite linear alternate;
-        }
       }
       p {
         display: none;

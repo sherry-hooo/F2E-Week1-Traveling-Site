@@ -1,6 +1,5 @@
 <template>
   <main class="home">
-    <div class="main_bg"></div>
     <!-- 大banner -->
     <section class="banner_area">
       <img
@@ -58,6 +57,18 @@
       </figure>
     </section>
   </main>
+
+  <footer>
+    <p class="about">關於我們</p>
+    <p>立志成為幫忙發現台灣之美的眼睛 幫您找出下一個旅遊景點</p>
+    <div>
+      <p>UI Design &colon; Rex Lai、Hooo.</p>
+      <p>Web Design &colon; Hooo.</p>
+    </div>
+    <p class="copyright">
+      Copyright &copy; 2021 要去哪裡鴨. All rights reserved.
+    </p>
+  </footer>
 </template>
 
 <script>
@@ -100,8 +111,8 @@ export default {
     receiveHoveredArea(cityName) {
       this.hoveredArea = cityName;
     },
-    reportWindowSize(event) {
-      console.log(event.target.innerWidth);
+    reportWindowSize() {
+      // console.log(event.target.innerWidth);
     },
   },
   mounted() {
@@ -117,57 +128,30 @@ export default {
 // home page layout
 main {
   overflow: hidden;
-  padding-bottom: 50vh;
-  .main_bg {
-    position: fixed;
-    z-index: -1;
-    top: 100px;
-  }
-  .banner_area,
-  .map_area {
-    height: calc(100vh - 100px);
-  }
-
-  @include breakpoint.mobile {
-    .main_bg {
-      top: 70px;
-    }
-    .banner_area,
-    .map_area {
-      height: calc(100vh - 70px);
-    }
-  }
-}
-
-// fixed 背景
-.main_bg {
-  box-sizing: border-box;
   width: 100%;
-  height: calc(100vh - 70px);
+  padding-bottom: 50px;
   background: url("../assets/img/Main-Banner-Mask.png");
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
 }
+
 // banner
 .banner_area {
   width: 100%;
-  padding: 50px 0 50px;
+  height: calc(100vh - 100px);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   text-align: start;
-  position: relative;
-  z-index: 0;
-
-  @include breakpoint.desktop {
-    padding-top: 100px;
+  @include breakpoint.mobile {
+    height: calc(100vh - 70px);
   }
-
   .slogan {
     align-self: center;
-    width: 60%;
-    z-index: 0;
+    width: 70%;
+    flex: 1 1 30%;
 
     @include breakpoint.desktop {
       width: 40%;
@@ -176,14 +160,16 @@ main {
       }
     }
   }
-
+  ::v-deep .menu {
+    flex: 1 1 40%;
+  }
   figure {
     width: 100%;
     height: 25%;
+    flex: 1 1 20%;
+
+    margin-top: auto;
     text-align: end;
-    position: absolute;
-    z-index: -1;
-    bottom: 0;
     display: flex;
     justify-content: flex-end;
   }
@@ -193,7 +179,9 @@ main {
 .map_area {
   color: black;
   font-size: 12px;
-  padding: 100px 20px 0;
+  height: 100vh;
+  padding: 20px;
+  margin-top: 50px;
 
   display: block;
   flex-direction: column;
@@ -203,7 +191,7 @@ main {
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    padding: 100px 20px 0;
+    padding: 100px 20px 20px;
   }
   .Taiwan {
     width: 100%;
@@ -232,6 +220,7 @@ main {
     .title {
       box-sizing: content-box;
       width: 50%;
+      max-width: 230px;
       margin-bottom: 30px;
       display: flex;
       align-items: center;
@@ -304,7 +293,6 @@ main {
 ::v-deep .menu {
   width: 80%;
   flex-direction: column;
-  margin-top: 40px;
   justify-content: flex-start;
 
   .dropDown_menu {
@@ -313,7 +301,7 @@ main {
     height: 60px;
     padding: 20px 30px;
     border-radius: 24px;
-    margin-bottom: 20px;
+    margin: 0 0 20px;
     background: #ffffff;
     cursor: pointer;
     display: flex;
@@ -333,6 +321,9 @@ main {
     right: 0;
     margin: 0 auto;
     height: fit-content;
+    @include breakpoint.mobile {
+      width: initial;
+    }
   }
   .search_button {
     width: 100%;
@@ -382,6 +373,32 @@ main {
   }
   100% {
     transform: scaleX(-1);
+  }
+}
+
+// footer
+footer {
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  // justify-items: start;
+  // align-items: start;
+  background: #f2f2f2;
+  font-size: 16px;
+  p {
+    text-align: start;
+  }
+  div {
+    display: flex;
+  }
+  .about {
+    color: #f79c31;
+    font-weight: 900;
+  }
+  .copyright {
+    text-align: center;
+    margin-top: auto;
+    font-weight: 700;
   }
 }
 </style>

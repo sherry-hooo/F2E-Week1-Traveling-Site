@@ -18,25 +18,10 @@
           :src="cardData.Picture.PictureUrl1"
           :alt="cardData.Picture.PictureUrl1PictureDescription1"
         />
-        <img v-else src="@/assets/img/replacedImg.png" alt="替代圖片" />
+        <img v-else src="@/assets/img/replacedImg1.jpg" alt="替代圖片" />
       </div>
       <div class="myCard_body">
         <h4>{{ cardData.Name }}</h4>
-        <p class="info1">
-          <img src="@/assets/img/location.svg" alt="" />
-          <span v-if="cardData.Address">{{ cardData.Address }}</span>
-          <span v-else>待更新</span>
-        </p>
-        <p class="info2">
-          <img src="@/assets/img/time.svg" alt="" />
-          <span v-if="cardData.OpenTime">{{ cardData.OpenTime }}</span>
-          <span v-else>全日開放</span>
-        </p>
-        <p class="info3">
-          <img src="@/assets/img/money.svg" alt="" />
-          <span v-if="cardData.TicketInfo">{{ cardData.TicketInfo }}</span>
-          <span v-else>不收費</span>
-        </p>
       </div>
     </div>
   </router-link>
@@ -45,13 +30,26 @@
 <script>
 export default {
   name: "ResultCard",
-  props: ["cardData", "cityLink"],
+  props: ["cardData", "cityLink", "index"],
   data() {
     return {};
+  },
+  methods: {
+    testScroll() {},
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @use "@/assets/scss/components/_card.scss";
+@use "@/assets/scss/components/_animation.scss";
+
+.loadingCard {
+  .myCard_thumbnail {
+    @extend %wave_loading;
+  }
+  .myCard_body {
+    @extend %wave_loading;
+  }
+}
 </style>

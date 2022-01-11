@@ -1,6 +1,6 @@
 <template>
   <div class="citySlider">
-  <h4>本月進行中活動</h4>
+    <h4>本月進行中活動</h4>
     <swiper
       :slidesPerView="1"
       :spaceBetween="30"
@@ -63,6 +63,7 @@ export default {
   },
   created() {
     const currentMonth = new Date().getMonth() + 1;
+    console.log(currentMonth);
     getApi
       .getCityActivity(this.cityLink, currentMonth)
       .then((res) => (this.activityList = res.data));
@@ -74,8 +75,10 @@ export default {
 
 <style lang="scss" scoped>
 .citySlider {
-  background: green;
   width: 100%;
   height: 500px;
+}
+h4 {
+  margin: 20px;
 }
 </style>

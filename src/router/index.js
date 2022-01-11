@@ -57,7 +57,6 @@ const routes = [
     path: "/search/:category/:cityLink/:name/:id",
     name: "description",
     props: true,
-    // component: description,
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Description.vue"),
   },

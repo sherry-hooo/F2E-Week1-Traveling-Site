@@ -17,23 +17,26 @@ apiClient.interceptors.request.use((config) => {
 });
 
 export default {
-  getCityScenicSpot(city) {
+  getAllScenicSpotByCity(city) {
     return apiClient.get(`/ScenicSpot/${city}`, {
       params: {
+        $select: "ScenicSpotID, ScenicSpotName, City, Picture",
         $format: "JSON",
       },
     });
   },
-  getCityRestaurant(city) {
+  getAllRestaurantByCity(city) {
     return apiClient.get(`/Restaurant/${city}`, {
       params: {
+        $select: "RestaurantID, RestaurantName, City, Picture",
         $format: "JSON",
       },
     });
   },
-  getCityHotel(city) {
+  getAllHotelByCity(city) {
     return apiClient.get(`/Hotel/${city}`, {
       params: {
+        $select: "HotelID, HotelName, City, Picture",
         $format: "JSON",
       },
     });
@@ -49,9 +52,10 @@ export default {
     });
   },
   getScenicSpot(city, id) {
+    console.log(city, id);
     return apiClient.get(`/ScenicSpot/${city}`, {
       params: {
-        $filter: `ID eq '${id}'`,
+        $filter: `ScenicSpotID eq '${id}'`,
         $format: "JSON",
       },
     });
@@ -59,7 +63,7 @@ export default {
   getRestaurant(city, id) {
     return apiClient.get(`/Restaurant/${city}`, {
       params: {
-        $filter: `ID eq '${id}'`,
+        $filter: `RestaurantID eq '${id}'`,
         $format: "JSON",
       },
     });
@@ -67,7 +71,7 @@ export default {
   getHotel(city, id) {
     return apiClient.get(`/Hotel/${city}`, {
       params: {
-        $filter: `ID eq '${id}'`,
+        $filter: `HotelID eq '${id}'`,
         $format: "JSON",
       },
     });

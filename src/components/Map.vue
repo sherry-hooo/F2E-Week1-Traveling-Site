@@ -3,25 +3,23 @@
 </template>
 
 <script>
+import citiesList from "@/assets/data/citiesList.json";
 import L from "leaflet";
 // import { myMapToken } from "@/assets/data/mapboxToken.js";
 
 export default {
+  props: ["city"],
   data() {
     return {
       openStreetMap: null,
     };
   },
   methods: {
-    getMap() {
-      // target location
+    getMap(centerPosition) {
       this.openStreetMap = L.map("map", {
-        center: [25.0408578889, 121.567904444],
-        // 可以嘗試改變 zoom 的數值
-        // 筆者嘗試後覺得 18 的縮放比例是較適當的查詢範圍
+        center: centerPosition,
         zoom: 13,
       });
-
       L.tileLayer(
         "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
         {
@@ -36,14 +34,34 @@ export default {
         }
       ).addTo(this.openStreetMap),
         // 標記 icon
-        (this.marker = L.marker([25.0408578889, 121.567904444])
+        (this.marker = L.marker(centerPosition)
           .addTo(this.openStreetMap)
           .bindPopup("A pretty CSS3 popup.<br> Easily customizable.")
           .openPopup());
     },
+    switchMapCenter(centerPosition) {
+      console.log(centerPosition);
+      this.openStreetMap.panTo(
+        new L.LatLng(centerPosition[0], centerPosition[1])
+      );
+      this.openStreetMap.setZoom(13);
+    },
   },
-  mounted() {
-    this.getMap();
+  computed: {
+    cityPosition() {
+      const position = citiesList.find(
+        (city) => city.cityLink === this.city
+      ).position;
+      return [Number(position.lat), Number(position.lon)];
+    },
+  },
+  async mounted() {
+    this.getMap(this.cityPosition);
+  },
+  watch: {
+    cityPosition() {
+      this.switchMapCenter(this.cityPosition);
+    },
   },
 };
 </script>

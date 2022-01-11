@@ -36,10 +36,10 @@ import citiesList from "@/assets/data/citiesList.json";
 
 export default {
   name: "Menu",
-  props: ["cityResult"],
+  props: [],
   data() {
     return {
-      chosedCity: this.cityResult ? this.cityResult : "請選擇縣市",
+      chosedCity: "請選擇縣市",
       cityLink: "",
       openMenu: false,
     };
@@ -110,6 +110,11 @@ export default {
       width: 12px;
       pointer-events: none;
     }
+    &:hover {
+      .toggle_icon {
+        animation: pointingDown 0.4s infinite alternate;
+      }
+    }
     @include breakpoint.mobile {
       font-size: 20px;
       height: 100%;
@@ -138,6 +143,15 @@ export default {
       font-size: 20px;
       height: 100%;
     }
+  }
+}
+
+@keyframes pointingDown {
+  from {
+    transform: translateY(1px);
+  }
+  to {
+    transform: translateY(3px);
   }
 }
 
